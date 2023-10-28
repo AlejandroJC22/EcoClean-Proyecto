@@ -1,4 +1,4 @@
-# ecoclean
+# flutter_ecoclean
 
 A new Flutter project.
 

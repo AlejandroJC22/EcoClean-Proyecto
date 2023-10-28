@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ecoclean/utilidades/responsive.dart';
+import 'package:flutter_ecoclean/utilidades/responsive.dart';
 
 class Edit extends StatelessWidget {
   @override
@@ -117,7 +117,7 @@ class Edit extends StatelessWidget {
                         FloatingActionButton(
                           onPressed: () {},
                           backgroundColor:
-                              const Color.fromARGB(255, 66, 103, 178),
+                          const Color.fromARGB(255, 66, 103, 178),
                           child: Image.asset('lib/iconos/facebook.png',
                               color: Colors.white, height: 30),
                         ),
@@ -128,7 +128,7 @@ class Edit extends StatelessWidget {
                           onPressed: () {},
                           backgroundColor: Colors.white,
                           child:
-                              Image.asset('lib/iconos/google.png', height: 30),
+                          Image.asset('lib/iconos/google.png', height: 30),
                         ),
                         const SizedBox(
                           width: 10,
@@ -145,7 +145,7 @@ class Edit extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(
-                      height: 20
+                        height: 20
                     ),
                     Container(
                       color: const Color.fromARGB(255, 232, 232, 232),
@@ -154,14 +154,14 @@ class Edit extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 15),
                       child: Align(
                         alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Control de la cuenta',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: responsive.ip(4),
-                            ),
+                        child: Text(
+                          'Control de la cuenta',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: responsive.ip(4),
                           ),
                         ),
+                      ),
                     ),
                     Container(
                       alignment: Alignment.bottomLeft,
@@ -175,7 +175,7 @@ class Edit extends StatelessWidget {
                               color: Colors.black),
                         ),
                         onPressed: () {
-                          
+
                         },
                       ),
                     ),
@@ -191,7 +191,7 @@ class Edit extends StatelessWidget {
                               color: Colors.red),
                         ),
                         onPressed: () {
-                          
+
                         },
                       ),
                     ),

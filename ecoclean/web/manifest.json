@@ -1,6 +1,6 @@
 {
-    "name": "ecoclean",
-    "short_name": "ecoclean",
+    "name": "flutter_ecoclean",
+    "short_name": "flutter_ecoclean",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
