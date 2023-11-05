@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_ecoclean/controller/google_signIn.dart';
-import 'package:flutter_ecoclean/controller/twitterSignIn.dart';
+import 'package:flutter_ecoclean/controller/twitter_signIn.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/menu.dart';
 import 'package:flutter_ecoclean/views/register.dart';
+import '../controller/facebook_signIn.dart';
 import '../models/inputs.dart';
 
 class Login extends StatefulWidget {
@@ -19,11 +20,11 @@ class Login extends StatefulWidget {
 class _loginpageState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
+
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController passwordController = TextEditingController();
-    final TextEditingController emailController = TextEditingController();
     final Responsive responsive = Responsive.of(context);
 
     return SafeArea(
@@ -136,39 +137,35 @@ class _loginpageState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FloatingActionButton(
-                          onPressed: () {},
-                          backgroundColor:
-                          const Color.fromARGB(255, 66, 103, 178),
-                          child: Image.asset('lib/iconos/facebook.png',
-                              color: Colors.white, height: 30),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () async{
-                            final userCredential = await signInWithGoogle(context);
-                            if (userCredential != null) {
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Menu()),);
-                            }
-                            },
-                          backgroundColor: Colors.white,
-                          child:
-                          Image.asset('lib/iconos/google.png', height: 30),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () async{
-                            final userCredential = await signInWithTwitter(context);
-                            if (userCredential != null) {
+                          onPressed: () async {
+                            final user = await _firebaseAuthService.signInWithFacebook();
+                            if (user != null) {
+                              print('Inicio de sesión exitoso: ${user.displayName}');
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Menu()),);
+                                MaterialPageRoute(builder: (context) => Menu()),
+                              );
                             }
+                          },
+                          backgroundColor: const Color.fromARGB(255, 66, 103, 178),
+                          child: Image.asset('lib/iconos/facebook.png', color: Colors.white, height: 30),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        FloatingActionButton(
+                          onPressed: () async {
+                            await signInWithGoogleAndSaveData(context);
+                          },
+                          backgroundColor: Colors.white,
+                          child: Image.asset('lib/iconos/google.png', height: 30),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        FloatingActionButton(
+                          onPressed: () async{
+
                           },
                           backgroundColor: Colors.black,
                           child: Image.asset(

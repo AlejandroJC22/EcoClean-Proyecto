@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter/material.dart';
@@ -11,21 +13,22 @@ class Home extends StatefulWidget {
 }
 
 class _homeState extends State<Home> {
-
   String username = ""; // Variable para almacenar el nombre de usuario
+  Future<void> _loadUserInfo() async {
+    final User? user = FirebaseAuth.instance.currentUser;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadUsername(); // Carga el nombre de usuario al iniciar la pantalla
-  }
+    if (user != null) {
+      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('prueba')
+          .doc(user.uid)
+          .get();
 
-  // Función para cargar el nombre de usuario desde SharedPreferences
-  _loadUsername() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      username = prefs.getString('username') ?? "";
-    });
+      if (userDoc.exists) {
+        setState(() {
+          username = userDoc['name'];
+        });
+      }
+    }
   }
 
   @override

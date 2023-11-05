@@ -17,24 +17,15 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -52,11 +43,42 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyALerPWAzlQfoCeqLg5WydhzFzH7_toPTM',
+    appId: '1:773972437619:web:3ab0d26878cec6672ad806',
+    messagingSenderId: '773972437619',
+    projectId: 'prueba-bd-81b78',
+    authDomain: 'prueba-bd-81b78.firebaseapp.com',
+    storageBucket: 'prueba-bd-81b78.appspot.com',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDo8r1RoXctsqmnJmVLVAH9B4zDsaSRWKE',
     appId: '1:773972437619:android:b229dda41cced83b2ad806',
     messagingSenderId: '773972437619',
     projectId: 'prueba-bd-81b78',
     storageBucket: 'prueba-bd-81b78.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAeoGOxNbe-KjQGxbiBRjD2llKXDPNE5eQ',
+    appId: '1:773972437619:ios:600722619ef0456c2ad806',
+    messagingSenderId: '773972437619',
+    projectId: 'prueba-bd-81b78',
+    storageBucket: 'prueba-bd-81b78.appspot.com',
+    androidClientId: '773972437619-eok1n71v4t1t97hck3elhucrh0hbl8qu.apps.googleusercontent.com',
+    iosClientId: '773972437619-vnsch78tmunf1kf68jullsgq1m6mvi9f.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterEcoclean',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAeoGOxNbe-KjQGxbiBRjD2llKXDPNE5eQ',
+    appId: '1:773972437619:ios:35f15a36bf305fb82ad806',
+    messagingSenderId: '773972437619',
+    projectId: 'prueba-bd-81b78',
+    storageBucket: 'prueba-bd-81b78.appspot.com',
+    androidClientId: '773972437619-eok1n71v4t1t97hck3elhucrh0hbl8qu.apps.googleusercontent.com',
+    iosClientId: '773972437619-ajuhhv87k51fgjggkpndvlmelnttjvc8.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterEcoclean.RunnerTests',
   );
 }

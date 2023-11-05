@@ -6,6 +6,9 @@
       <excludeFolder url="file://$MODULE_DIR$/flutter_ecoclean/build" />
       <excludeFolder url="file://$MODULE_DIR$/flutter_ecoclean/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/flutter_ecoclean/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ecoclean/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ecoclean/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ecoclean/.dart_tool" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
