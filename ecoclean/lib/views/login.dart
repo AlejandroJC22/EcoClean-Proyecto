@@ -97,6 +97,7 @@ class _loginpageState extends State<Login> {
                                     builder: (context) => Menu()));
                           } catch (e) {
                             print('Sign-in error: $e');
+                            _showAlertDialog("Verifica los datos", "Usuario o contraseña incorrectos.");
                           }
                         },
                       ),),
@@ -156,6 +157,7 @@ class _loginpageState extends State<Login> {
                         FloatingActionButton(
                           onPressed: () async {
                             await signInWithGoogleAndSaveData(context);
+
                           },
                           backgroundColor: Colors.white,
                           child: Image.asset('lib/iconos/google.png', height: 30),
@@ -164,8 +166,8 @@ class _loginpageState extends State<Login> {
                           width: 10,
                         ),
                         FloatingActionButton(
-                          onPressed: () async{
-
+                          onPressed: () async {
+                            await signInWithTwitter(context);
                           },
                           backgroundColor: Colors.black,
                           child: Image.asset(
@@ -204,5 +206,4 @@ class _loginpageState extends State<Login> {
       },
     );
   }
-
 }

@@ -65,24 +65,31 @@ class _RegisterState extends State<Register> {
           email: email,
           password: password,
         );
-
         final User? user = userCredential.user;
 
-
-
-
-        // Limpiar los campos después de un registro exitoso
         if (user != null) {
-          // Guardamos el nombre de usuario y el correo en Firestore si el registro es exitoso
-          await FirebaseFirestore.instance.collection('prueba').add({
-            'uid': user.uid,
-            'nombre': username,
-            'correo': email,
-            'imagenURL': user.photoURL,
-          });
-          DialogHelper.showAlertDialog(context,"Registro Exitoso", "Se ha completado el registro, por favor inicie sesión.");
+
+          final userId = user.uid;
+          // Crear una referencia a la colección "prueba" en Cloud Firestore
+          final CollectionReference pruebaCollection = FirebaseFirestore.instance.collection('users');
+
+          // Verificar si el usuario ya existe en Cloud Firestore
+          final QuerySnapshot existingUser = await pruebaCollection.where('uid', isEqualTo: userId).get();
+
+          if (existingUser.docs.isEmpty) {
+            // El usuario no existe en Firestore, así que lo agregamos
+            await pruebaCollection.doc(userId).set({
+              'uid': userId,
+              'nombre': username,
+              'correo': email,
+              'imagenURL': 'https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg',
+              'provider': "Email"
+            });
+
+            print('Usuario agregado a Firestore.');
+          }
+          DialogHelper.showAlertDialogRegister(context,"Registro Exitoso", "Se ha completado el registro, por favor inicie sesión.");
           _clearFields();
-          Navigator.pop(context);
 
         } else {
           // Mostramos un mensaje de error en caso de que no se almacenen los datos en la base de datos

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
@@ -6,6 +7,7 @@ class Edit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
+    final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(left: 15, top: 20, right: 15),

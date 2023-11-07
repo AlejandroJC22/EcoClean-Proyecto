@@ -34,9 +34,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "example://gizmos” -->
-                <!-- Registered Callback URLs in TwitterApp -->
-                <data android:scheme="https://prueba-bd-81b78.firebaseapp.com/__/auth/handler"/> <!-- host is option -->
+                <data android:scheme="https" android:host="prueba-bd-81b78.firebaseapp.com" android:path="/__/auth/handler" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

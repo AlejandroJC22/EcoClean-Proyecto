@@ -35,24 +35,30 @@ Future<UserCredential?> signInWithGoogleAndSaveToFirestore(BuildContext context)
     final User? user = userCredential.user;
 
     if (user != null) {
+
+      final userId = user.uid;
       // Crear una referencia a la colección "prueba" en Cloud Firestore
-      final CollectionReference pruebaCollection = FirebaseFirestore.instance.collection('prueba');
+      final CollectionReference pruebaCollection = FirebaseFirestore.instance.collection('users');
 
       // Verificar si el usuario ya existe en Cloud Firestore
-      final QuerySnapshot existingUser = await pruebaCollection.where('uid', isEqualTo: user.uid).get();
+      final QuerySnapshot existingUser = await pruebaCollection.where('uid', isEqualTo: userId).get();
 
       if (existingUser.docs.isEmpty) {
         // El usuario no existe en Firestore, así que lo agregamos
-        await pruebaCollection.add({
-          'uid': user.uid,
+        await pruebaCollection.doc(userId).set({
+          'uid': userId,
           'nombre': user.displayName,
           'correo': user.email,
           'imagenURL': user.photoURL,
+          'provider': "Google"
         });
 
         print('Usuario agregado a Firestore.');
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+
       } else {
         print('El usuario ya existe en Firestore.');
+        showMenuScreen(context);
       }
 
       return userCredential;
@@ -89,4 +95,3 @@ Future<void> signInWithGoogleAndSaveData(BuildContext context) async {
     signInWithGoogleAndSaveToFirestore(context);
   }
 }
-
