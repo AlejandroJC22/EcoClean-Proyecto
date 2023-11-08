@@ -33,12 +33,20 @@ class TextStyles {
       fontFamily: AppFonts.fontFamily,
     );
   }
+  static TextStyle subtitulo(Responsive responsive) {
+    return TextStyle(
+      color: AppColors.texto,
+      fontWeight: FontWeight.bold,
+      fontSize: responsive.ip(5),
+      fontFamily: AppFonts.fontFamily,
+    );
+  }
 
   static TextStyle textoNegro(Responsive responsive) {
     return TextStyle(
       color: AppColors.texto,
       fontWeight: FontWeight.bold,
-      fontSize: responsive.ip(4),
+      fontSize: responsive.ip(6),
       fontFamily: AppFonts.fontFamily,
     );
   }

@@ -30,7 +30,7 @@ class _ForgotPassState extends State<ForgotPass>{
     DialogHelper.showAlertDialogRegister(context,"Correo enviado", "Se ha enviado un correo electronico con el link de recuperación de contraseña");
 
   }on FirebaseAuthException catch (e){
-    DialogHelper.showAlertDialogRegister(context,"Datos erroneos", "El correo ingresado no se encuentra registrado, por favor verifique el correo");
+    DialogHelper.showAlertDialog(context,"Datos erroneos", "El correo ingresado no se encuentra registrado, por favor verifique el correo");
   }
 }
 
