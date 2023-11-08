@@ -54,7 +54,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
         child: Column(
           children: [
           const SizedBox(
@@ -119,22 +121,12 @@ class _HomeState extends State<Home> {
             child: ListTile(
               title: Text(
                 '¿Tienes dudas?',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: responsive.ip(4),
-                  fontFamily: 'Impact',
-                ),
+                style: TextStyles.preguntas(responsive),
                 textAlign: TextAlign.center,
               ),
               subtitle: Text(
                 'Pregúntale a nuestro ChatBot',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: responsive.ip(4),
-                  fontFamily: 'Impact',
-                ),
+                style: TextStyles.enlaces(responsive),
                 textAlign: TextAlign.center,
               ),
               trailing: InkWell(
@@ -162,6 +154,7 @@ class _HomeState extends State<Home> {
           ),
           ],
         ),
+      ),
       ),
     );
   }

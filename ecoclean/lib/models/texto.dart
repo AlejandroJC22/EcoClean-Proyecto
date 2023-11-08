@@ -6,7 +6,8 @@ class AppColors {
   static const Color titulo = Colors.green;
   static const Color texto = Colors.black;
   static const Color preguntas = Colors.grey;
-  static const Color enlaces = Colors.red;
+  static const Color enlaces = Colors.green;
+  static const Color salidas = Colors.red;
   static const Color botonChat = Colors.black;
   static const Color iconoBoton = Colors.white;
 }
@@ -57,6 +58,15 @@ class TextStyles {
     );
   }
   static TextStyle enlaces(Responsive responsive) {
+    return TextStyle(
+      color: AppColors.enlaces,
+      fontWeight: FontWeight.bold,
+      fontSize: responsive.ip(4),
+      fontFamily: AppFonts.fontFamily,
+    );
+
+  }
+  static TextStyle salidas(Responsive responsive) {
     return TextStyle(
       color: AppColors.enlaces,
       fontWeight: FontWeight.bold,

@@ -6,6 +6,8 @@ import 'package:flutter_ecoclean/views/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_ecoclean/controller/dialogHelper.dart';
 
+import '../models/texto.dart';
+
 // Llamamos a la pantalla Register
 class Register extends StatefulWidget {
   Register({super.key});
@@ -110,22 +112,28 @@ class _RegisterState extends State<Register> {
     // Condicionamos para que se establezcan bordes en la vista
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false, // Esto quitará la flecha de retroceso
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos horizontalmente
+            children: <Widget>[
+              Image.asset("lib/iconos/logoApp.png", width: 32, height: 32),
+            ],
+          ),
+        ),
         body: SingleChildScrollView(
           child: Column(
             // Alineamos a la izquierda todos los datos
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Margen entre textos
-              const SizedBox(height: 60),
+              const SizedBox(height: 15),
               Container(
                 // Establecemos un título con su respectivo margen
                 margin: const EdgeInsets.only(left: 15),
-                child: const Text(
+                child: Text(
                   "Registrarse",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyles.tituloNegro(responsive)
                 ),
               ),
               // Margen entre textos
@@ -168,7 +176,7 @@ class _RegisterState extends State<Register> {
                 margin: const EdgeInsets.all(15),
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                   // Llamamos a la función que valida todos los datos según condiciones
                   onPressed: _registerUser,
                   child: Text(
@@ -193,7 +201,7 @@ class _RegisterState extends State<Register> {
                       child: const Text(
                         "Iniciar Sesión",
                         style: TextStyle(
-                          color: Colors.red,
+                          color: Colors.green,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),

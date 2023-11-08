@@ -141,10 +141,7 @@ class Favorites extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Editar rutas favoritas',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: responsive.ip(4),
-                        ),
+                        style: TextStyles.preguntas(responsive)
                       ),
                     ),
                   ),
@@ -154,11 +151,7 @@ class Favorites extends StatelessWidget {
                     child: CupertinoButton(
                       child: Text(
                         "Eliminar ruta",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: responsive.ip(4),
-                            fontFamily: 'Impact',
-                            color: Colors.red),
+                          style: TextStyles.salidas(responsive)
                       ),
                       onPressed: () {
 

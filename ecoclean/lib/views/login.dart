@@ -5,6 +5,7 @@ import 'package:flutter_ecoclean/controller/google_signIn.dart';
 import 'package:flutter_ecoclean/controller/twitter_signIn.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
+import 'package:flutter_ecoclean/views/forgot_password.dart';
 import 'package:flutter_ecoclean/views/menu.dart';
 import 'package:flutter_ecoclean/views/register.dart';
 import '../controller/facebook_signIn.dart';
@@ -36,7 +37,7 @@ class _loginpageState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'lib/iconos/logoApp.png',
+                  'lib/iconos/logo.png',
                   height: 200,
                 ),
                 Column(
@@ -70,7 +71,7 @@ class _loginpageState extends State<Login> {
                       width: MediaQuery.of(context).size.width - 30,
                       height: 50,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                         child: Text("Iniciar Sesión", style: TextStyle(fontSize: responsive.ip(5), color: Colors.white)),
                         onPressed: () async {
                           final String email = emailController.text;
@@ -108,7 +109,12 @@ class _loginpageState extends State<Login> {
                           "¿Olvidaste tu contraseña?",
                           style: TextStyles.preguntas(responsive),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPass()));
+                        },
                       ),
                     ),
                     Container(

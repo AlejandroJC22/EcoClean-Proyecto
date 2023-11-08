@@ -24,7 +24,7 @@ class Inputs extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: labelText,
                 labelStyle: const TextStyle(
-                  color: Colors.red,
+                  color: Colors.green,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),

@@ -73,68 +73,74 @@ class MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white10,
-        title: const Text('EcoClean Bogotá', style: TextStyle(color: Colors.green)),
-        automaticallyImplyLeading: false,
-      ),
-      endDrawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            const SizedBox(height: 30),
-            UserAccountsDrawerHeader(
-              accountName: Text(username, style: TextStyles.textoSinNegrita(responsive)),
-              accountEmail: Text(userEmail, style: TextStyles.textoSinNegrita(responsive)),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(userImage),
+    return Container(
+        color: Colors.white,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0.0,
+            iconTheme: const IconThemeData(color: Colors.black),
+            backgroundColor: Colors.white,
+            title: const Text('EcoClean Bogotá', style: TextStyle(color: Colors.green)),
+            automaticallyImplyLeading: false,
+          ),
+          endDrawer: Drawer(
+            child: Container(
+              color: Colors.white,
+              child: ListView(
+                children: <Widget>[
+                  const SizedBox(height: 30),
+                  UserAccountsDrawerHeader(
+                    accountName: Text(username, style: TextStyles.textoSinNegrita(responsive)),
+                    accountEmail: Text(userEmail, style: TextStyles.textoSinNegrita(responsive)),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundImage: NetworkImage(userImage),
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                  ),
+                  ListTile(
+                    leading: _selectedDrawerItem == 0 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.green) : const Icon(Icons.arrow_back_ios),
+                    trailing: _selectedDrawerItem == 0 ? const Icon(Icons.home, color: Colors.green) : const Icon(Icons.home),
+                    selected: (0 == _selectedDrawerItem),
+                    title: Text('Página principal', style: TextStyle(color: _selectedDrawerItem == 0 ? Colors.green : Colors.black, fontSize: 16)),
+                    onTap: () {
+                      _onSelectItem(0);
+                    },
+                  ),
+                  ListTile(
+                    leading: _selectedDrawerItem == 1 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.green) : const Icon(Icons.arrow_back_ios),
+                    trailing: _selectedDrawerItem == 1 ? const Icon(Icons.edit, color: Colors.green) : const Icon(Icons.edit),
+                    selected: (1 == _selectedDrawerItem),
+                    title: Text('Editar perfil', style: TextStyle(color: _selectedDrawerItem == 1 ? Colors.green : Colors.black, fontSize: 16)),
+                    onTap: () {
+                      _onSelectItem(1);
+                    },
+                  ),
+                  ListTile(
+                    leading: _selectedDrawerItem == 2 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.green) : const Icon(Icons.arrow_back_ios),
+                    trailing: _selectedDrawerItem == 2 ? const Icon(Icons.favorite, color: Colors.green) : const Icon(Icons.favorite),
+                    selected: (2 == _selectedDrawerItem),
+                    title: Text('Rutas favoritas', style: TextStyle(color: _selectedDrawerItem == 2 ? Colors.green : Colors.black, fontSize: 16)),
+                    onTap: () {
+                      _onSelectItem(2);
+                    },
+                  ),
+                  const SizedBox(height: 300),
+                  ListTile(
+                    title: Text('Cerrar sesión', style: TextStyle(color: Colors.red, fontSize: 16)),
+                    leading: const Icon(Icons.logout, color: Colors.red),
+                    onTap: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                    },
+                  ),
+                ],
               ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-            ),
-            ListTile(
-              leading: _selectedDrawerItem == 0 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.red) : const Icon(Icons.arrow_back_ios),
-              trailing: _selectedDrawerItem == 0 ? const Icon(Icons.home, color: Colors.red) : const Icon(Icons.home),
-              selected: (0 == _selectedDrawerItem),
-              title: Text('Página principal', style: TextStyle(color: _selectedDrawerItem == 0 ? Colors.red : Colors.black, fontSize: 16)),
-              onTap: () {
-                _onSelectItem(0);
-              },
-            ),
-            ListTile(
-              leading: _selectedDrawerItem == 1 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.red) : const Icon(Icons.arrow_back_ios),
-              trailing: _selectedDrawerItem == 1 ? const Icon(Icons.edit, color: Colors.red) : const Icon(Icons.edit),
-              selected: (1 == _selectedDrawerItem),
-              title: Text('Editar perfil', style: TextStyle(color: _selectedDrawerItem == 1 ? Colors.red : Colors.black, fontSize: 16)),
-              onTap: () {
-                _onSelectItem(1);
-              },
-            ),
-            ListTile(
-              leading: _selectedDrawerItem == 2 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.red) : const Icon(Icons.arrow_back_ios),
-              trailing: _selectedDrawerItem == 2 ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite),
-              selected: (2 == _selectedDrawerItem),
-              title: Text('Rutas favoritas', style: TextStyle(color: _selectedDrawerItem == 2 ? Colors.red : Colors.black, fontSize: 16)),
-              onTap: () {
-                _onSelectItem(2);
-              },
-            ),
-            const SizedBox(height: 300),
-            ListTile(
-              title: Text('Cerrar sesión', style: TextStyle(color: Colors.red, fontSize: 16)),
-              leading: const Icon(Icons.logout, color: Colors.red),
-              onTap: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
-              },
-            ),
-          ],
+          )
+          ),
+          body: _getDrawerItemWidget(_selectedDrawerItem),
         ),
-      ),
-      body: _getDrawerItemWidget(_selectedDrawerItem),
     );
   }
 }

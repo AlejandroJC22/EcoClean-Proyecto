@@ -1,13 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
+import '../models/texto.dart';
 
-class Edit extends StatelessWidget {
+class Edit extends StatefulWidget{
+  @override
+  EditState createState() => EditState();
+}
+
+class EditState extends State<Edit> {
+
+  String username = "";
+  String userEmail = "";
+  String userImage = "";
+
+  Future<void> _loadUserInfo() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      final DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>;
+
+        // Verificar que las propiedades existen y no son nulas antes de acceder a ellas
+        if (userData['nombre'] != null) {
+          setState(() {
+            username = userData['nombre'];
+            userEmail = userData['correo'];
+            userImage = userData['imagenURL'];
+          });
+        }
+      }
+    }
+  }
+
+
+  @override
+  void initState(){
+    super.initState();
+    _loadUserInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
-    final User? user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.only(left: 15, top: 20, right: 15),
@@ -19,11 +61,7 @@ class Edit extends StatelessWidget {
             children: [
               Text(
                 'Editar perfil',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: responsive.ip(5),
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyles.tituloNegro(responsive)
               ),
               const SizedBox(height: 25),
               Center(
@@ -44,10 +82,9 @@ class Edit extends StatelessWidget {
                             )
                           ],
                           shape: BoxShape.circle,
-                          image: const DecorationImage(
+                          image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                                'https://cdn.icon-icons.com/icons2/3300/PNG/512/u_letter_letters_alphabet_icon_208967.png'),
+                            image: NetworkImage(userImage),
                           ),
                         ),
                       ),
@@ -78,7 +115,7 @@ class Edit extends StatelessWidget {
                   children: [
                     ListTile(
                       title: Text('Nombre de usuario'),
-                      subtitle: Text('Tu nombre de usuario'),
+                      subtitle: Text(username),
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
@@ -89,7 +126,7 @@ class Edit extends StatelessWidget {
                     Divider(),
                     ListTile(
                       title: Text('Correo electrónico'),
-                      subtitle: Text('tucorreo@example.com'),
+                      subtitle: Text(userEmail),
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
@@ -158,27 +195,8 @@ class Edit extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Control de la cuenta',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: responsive.ip(4),
-                          ),
+                          style: TextStyles.preguntas(responsive)
                         ),
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.bottomLeft,
-                      child: CupertinoButton(
-                        child: Text(
-                          "Añadir otra cuenta",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: responsive.ip(4),
-                              fontFamily: 'Impact',
-                              color: Colors.black),
-                        ),
-                        onPressed: () {
-
-                        },
                       ),
                     ),
                     Container(
@@ -186,11 +204,7 @@ class Edit extends StatelessWidget {
                       child: CupertinoButton(
                         child: Text(
                           "Eliminar cuenta",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: responsive.ip(4),
-                              fontFamily: 'Impact',
-                              color: Colors.red),
+                            style: TextStyles.salidas(responsive)
                         ),
                         onPressed: () {
 

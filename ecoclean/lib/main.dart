@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(primaryColor: Colors.green, useMaterial3: true),
       title: 'EcoClean Bogotá',
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
