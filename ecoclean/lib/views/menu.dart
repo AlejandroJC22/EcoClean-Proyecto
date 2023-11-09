@@ -20,6 +20,7 @@ class MenuState extends State<Menu> {
   String userImage = "";
   int _selectedDrawerItem = 0;
 
+
   Future<void> _loadUserInfo() async {
     final User? user = FirebaseAuth.instance.currentUser;
 
@@ -44,6 +45,13 @@ class MenuState extends State<Menu> {
     }
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
@@ -53,7 +61,7 @@ class MenuState extends State<Menu> {
       case 2:
         return Favorites();
       default:
-        return Home(); // Puedes cambiar el valor predeterminado si es necesario.
+        return Home();
     }
   }
 
@@ -64,10 +72,12 @@ class MenuState extends State<Menu> {
     });
   }
 
+
+
   @override
-  void initState() {
-    super.initState();
-    _loadUserInfo();
+  void didUpdateWidget(covariant Menu oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _loadUserInfo(); // Cargar la información del usuario al actualizar el widget
   }
 
   @override
@@ -96,7 +106,7 @@ class MenuState extends State<Menu> {
                       backgroundImage: NetworkImage(userImage),
                     ),
                     decoration: const BoxDecoration(
-                      color: Colors.white,
+                      color: Color.fromRGBO(0,255,0,0.2),
                     ),
                   ),
                   ListTile(

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/dialogHelper.dart';
-import 'package:flutter_ecoclean/views/login.dart';
 
 import '../models/inputs.dart';
 import '../models/texto.dart';
@@ -26,6 +25,7 @@ class _ForgotPassState extends State<ForgotPass>{
 
   Future<void> PasswordReset() async {
     try {
+
       final email = emailController.text.trim();
       final userExists = await doesEmailExistInFirestore(email);
 
@@ -79,7 +79,7 @@ class _ForgotPassState extends State<ForgotPass>{
               GestureDetector(
                 onTap: () {
                   // Navegar a la pantalla de inicio de sesión aquí
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Login()));
+                  Navigator.of(context).pop();
                 },
                 child: Text("Cancelar", style: TextStyles.enlaces(responsive)),
               ),

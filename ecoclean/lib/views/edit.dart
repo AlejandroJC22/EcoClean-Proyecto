@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/dialogHelper.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
+import 'package:flutter_ecoclean/views/editProfile/add_data.dart';
 import 'package:flutter_ecoclean/views/editProfile/edit_profile.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/texto.dart';
@@ -22,6 +23,7 @@ class EditState extends State<Edit> {
   String username = "";
   String userEmail = "";
   String userImage = "";
+  String id = "";
 
   Future<void> _loadUserInfo() async {
     final User? user = FirebaseAuth.instance.currentUser;
@@ -41,12 +43,12 @@ class EditState extends State<Edit> {
             username = userData['nombre'];
             userEmail = userData['correo'];
             userImage = userData['imagenURL'];
+            id = userData['uid'];
           });
         }
       }
     }
   }
-
 
   @override
   void initState(){
@@ -59,6 +61,7 @@ class EditState extends State<Edit> {
     setState(() {
       _img = image;
     });
+    StoreData().saveData(file: _img!, userId: id);
   }
 
   @override
@@ -106,7 +109,13 @@ class EditState extends State<Edit> {
                     )
                         : GestureDetector(
                       onTap: () {
-                        selectImage();
+                        DialogHelper.showOptions(context, (ImageSource? source) async {
+                          if (source == ImageSource.gallery) {
+                            selectImage();
+                          } else if (source == ImageSource.camera) {
+                            // Lógica para usar la cámara
+                          }
+                        });
                       },
                       child: CircleAvatar(
                         radius: 60,
@@ -169,7 +178,6 @@ class EditState extends State<Edit> {
                               setState(() {
                                 username = newName;
                               });
-                              // Aquí puedes agregar la lógica para actualizar el nombre en Firebase Firestore
                             },
                           );
                         },
@@ -196,14 +204,14 @@ class EditState extends State<Edit> {
                         },
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                     ListTile(
-                      title: Text('Contraseña'),
-                      subtitle: Text('********'),
+                      title: const Text('Contraseña'),
+                      subtitle: const Text('********'),
                       trailing: IconButton(
-                        icon: Icon(Icons.edit),
+                        icon: const Icon(Icons.edit),
                         onPressed: () {
-                          // Agregar lógica para editar el correo electrónico
+                          DialogHelper.editPassword(context);
                         },
                       ),
                     ),
@@ -229,7 +237,7 @@ class EditState extends State<Edit> {
                             style: TextStyles.salidas(responsive)
                         ),
                         onPressed: () {
-
+                          DialogHelper.deleteAccount(context, id);
                         },
                       ),
                     ),
