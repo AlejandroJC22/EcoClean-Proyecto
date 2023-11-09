@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/dialogHelper.dart';
@@ -23,16 +24,48 @@ class _ForgotPassState extends State<ForgotPass>{
     super.dispose();
   }
 
-  Future PasswordReset() async {
-  try{
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text.trim());
+  Future<void> PasswordReset() async {
+    try {
+      final email = emailController.text.trim();
+      final userExists = await doesEmailExistInFirestore(email);
 
-    DialogHelper.showAlertDialogRegister(context,"Correo enviado", "Se ha enviado un correo electronico con el link de recuperación de contraseña");
+      if (userExists) {
+        // El correo está registrado en Firestore, puedes enviar el correo de restablecimiento
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-  }on FirebaseAuthException catch (e){
-    DialogHelper.showAlertDialog(context,"Datos erroneos", "El correo ingresado no se encuentra registrado, por favor verifique el correo");
+        DialogHelper.showAlertDialogRegister(
+          context,
+          "Correo enviado",
+          "Se ha enviado un correo electrónico con el enlace de recuperación de contraseña",
+        );
+      } else {
+        // El correo no está registrado en Firestore
+        DialogHelper.showAlertDialog(
+          context,
+          "Datos erróneos",
+          "El correo ingresado no se encuentra registrado en nuestra base de datos, por favor verifique el correo",
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      // Manejo de errores de Firebase Authentication
+      if (e.code == 'invalid-email') {
+        DialogHelper.showAlertDialog(context, "Correo inválido", "Por favor ingrese un correo válido.");
+      } else {
+        DialogHelper.showAlertDialog(context, "Datos erróneos", "Por favor ingrese el correo para recuperar contraseña");
+      }
+    }
   }
-}
+
+  Future<bool> doesEmailExistInFirestore(String email) async {
+    final QuerySnapshot result = await FirebaseFirestore.instance
+        .collection('users')
+        .where('correo', isEqualTo: email)
+        .limit(1)
+        .get();
+
+    return result.docs.isNotEmpty;
+  }
+
 
   @override
   Widget build(BuildContext context) {

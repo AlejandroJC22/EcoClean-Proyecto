@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,7 +25,8 @@ class _HomeState extends State<Home> {
     final User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
-      print('Usuario actual: ${user.uid}'); // Agrega una impresión para verificar el usuario actual
+      print('Usuario actual: ${user
+          .uid}'); // Agrega una impresión para verificar el usuario actual
       final DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
@@ -33,7 +35,8 @@ class _HomeState extends State<Home> {
       if (userDoc.exists) {
         final userData = userDoc.data() as Map<String, dynamic>;
 
-        print('Datos del usuario cargados: $userData'); // Agrega una impresión para los datos del usuario
+        print(
+            'Datos del usuario cargados: $userData'); // Agrega una impresión para los datos del usuario
 
         // Verificar que las propiedades existen y no son nulas antes de acceder a ellas
         if (userData['nombre'] != null) {
@@ -57,104 +60,150 @@ class _HomeState extends State<Home> {
       body: Container(
         color: Colors.white,
         child: SingleChildScrollView(
-        child: Column(
-          children: [
-          const SizedBox(
-          height: 20,
-        ),
-        Container(
-          alignment: Alignment.bottomLeft,
-          margin: const EdgeInsets.only(left: 15),
-          child: Text(
-            "Bienvenido $username",
-            style: TextStyles.tituloNegro(responsive),
-          ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-            Container(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                alignment: Alignment.bottomLeft,
+                margin: const EdgeInsets.only(left: 15),
+                child: Text(
+                  "Bienvenido $username",
+                  style: TextStyles.tituloNegro(responsive),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                  alignment: Alignment.centerRight,
+                  margin: const EdgeInsets.only(right: 15),
+                  child: Text(
+                    "Rutas cerca de ti",
+                    style: TextStyles.subtitulos(responsive),
+                  )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: Container(
+                  width: double.infinity,
+                  height: 300,
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(right: 15),
                 child: Text(
-                  "Rutas cerca de ti",
-                  style: TextStyles.textoNegro(responsive),
-                )
-            ),
-          Card(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            child: Container(
-              width: double.infinity,
-              height: 300,
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            margin: const EdgeInsets.only(right: 15),
-            child: Text(
-              "Empresas prestadoras del servicio",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: responsive.ip(4),
-                fontFamily: 'Impact',
+                  "Empresas prestadoras del servicio",
+                  style: TextStyles.subtitulos(responsive),
+                ),
               ),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Card(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            child: Container(
-              width: double.infinity,
-              height: 100,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: ListTile(
-              title: Text(
-                '¿Tienes dudas?',
-                style: TextStyles.preguntas(responsive),
-                textAlign: TextAlign.center,
+              const SizedBox(
+                height: 10,
               ),
-              subtitle: Text(
-                'Pregúntale a nuestro ChatBot',
-                style: TextStyles.enlaces(responsive),
-                textAlign: TextAlign.center,
-              ),
-              trailing: InkWell(
-                onTap: () {
-                  // Agregar la lógica para abrir el chatbot aquí
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  width: 60,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black,
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 15),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 100,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      buildCards('lib/iconos/bogota_limpia.png',
+                          'https://www.bogotalimpia.com/'),
+                      SizedBox(width: 15),
+                      buildCards('lib/iconos/ciudad_limpia.jpg',
+                          'https://www.ciudadlimpia.com.co/'),
+                      SizedBox(width: 15),
+                      buildCards('lib/iconos/lime.jpeg',
+                          'https://www.lime.net.co/'),
+                      SizedBox(width: 15),
+                      buildCards('lib/iconos/area_limpia.png',
+                          'https://arealimpia.com.co/'),
+                      SizedBox(width: 15),
+                      buildCards('lib/iconos/promoambiental.png',
+                          'https://www.promoambientaldistrito.com/'),
+                    ],
                   ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.chat_bubble,
-                      color: Colors.white,
-                      size: 30, // Color del icono
+                ),
+
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              ListTile(
+                title: Text(
+                  '¿Tienes dudas?',
+                  style: TextStyles.preguntas(responsive),
+                  textAlign: TextAlign.center,
+                ),
+                subtitle: Text(
+                  'Pregúntale a nuestro ChatBot',
+                  style: TextStyles.enlaces(responsive),
+                  textAlign: TextAlign.center,
+                ),
+                trailing: InkWell(
+                  onTap: () {
+                    // Agregar la lógica para abrir el chatbot aquí
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.black,
                     ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.chat_bubble,
+                        color: Colors.white,
+                        size: 30, // Color del icono
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildCards(String imagePath, String url) {
+    final link = Uri.parse(url);
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      width: 100,
+      height: 100,
+      child: Column(
+        children: [
+          Expanded(
+            child: AspectRatio(
+              aspectRatio: 4 / 3,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: InkWell(
+                  onTap: ()  async {
+                    launchUrl(link);
+                  },
+                  child: Image.asset(
+                    imagePath,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
           ),
-          ],
-        ),
-      ),
+        ],
       ),
     );
   }

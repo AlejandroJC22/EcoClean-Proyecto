@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_ecoclean/controller/dialogHelper.dart';
 import 'package:flutter_ecoclean/controller/google_signIn.dart';
 import 'package:flutter_ecoclean/controller/twitter_signIn.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/forgot_password.dart';
 import 'package:flutter_ecoclean/views/menu.dart';
 import 'package:flutter_ecoclean/views/register.dart';
+import '../controller/email_signIn.dart';
 import '../controller/facebook_signIn.dart';
 import '../models/inputs.dart';
 
@@ -76,30 +78,7 @@ class _loginpageState extends State<Login> {
                         onPressed: () async {
                           final String email = emailController.text;
                           final String password = passwordController.text;
-
-                          if (email.isEmpty || password.isEmpty) {
-                            _showAlertDialog("Ingresa datos", "Por favor ingresa el correo y la contraseña.");
-                            return;
-                          }
-
-                          try {
-                            UserCredential userCredential = await FirebaseAuth
-                                .instance
-                                .signInWithEmailAndPassword(
-                              email: email,
-                              password: password,
-                            );
-
-                            User? user = userCredential.user;
-                            print('Signed in: ${user!.uid}');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Menu()));
-                          } catch (e) {
-                            print('Sign-in error: $e');
-                            _showAlertDialog("Verifica los datos", "Usuario o contraseña incorrectos.");
-                          }
+                          signInWithEmail(context, email, password);
                         },
                       ),),
                     Container(

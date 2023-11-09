@@ -146,46 +146,6 @@ class EditState extends State<Edit> {
                       ),
                     ),
                     Divider(),
-                    const ListTile(
-                      title: Text('Conexiones sociales', textAlign: TextAlign.center),
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FloatingActionButton(
-                          onPressed: () {},
-                          backgroundColor:
-                          const Color.fromARGB(255, 66, 103, 178),
-                          child: Image.asset('lib/iconos/facebook.png',
-                              color: Colors.white, height: 30),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () {},
-                          backgroundColor: Colors.white,
-                          child:
-                          Image.asset('lib/iconos/google.png', height: 30),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () {},
-                          backgroundColor: Colors.black,
-                          child: Image.asset(
-                            'lib/iconos/twitter.png',
-                            color: Colors.white,
-                            height: 30,
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                        height: 20
-                    ),
                     Container(
                       color: const Color.fromARGB(255, 232, 232, 232),
                       width: double.infinity,

@@ -23,6 +23,8 @@ class DialogHelper {
       },
     );
   }
+
+  //Clase ventana de dialogo al registrar un nuevo usuario por correo electronico
   static void showAlertDialogRegister(BuildContext context, String title, String message) {
     showDialog(
       context: context,
@@ -34,7 +36,7 @@ class DialogHelper {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // No cerrar la pantalla actual, solo el AlertDialog
+                // Cerrar la ventana actual al ser registro exitoso
                 Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Login()));
               },
               child: Text("Aceptar"),

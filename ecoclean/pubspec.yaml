@@ -46,6 +46,7 @@ dependencies:
   connectivity_plus: ^5.0.1
   cached_network_image: ^3.3.0
   http:
+  url_launcher:
 
 
 dev_dependencies:
