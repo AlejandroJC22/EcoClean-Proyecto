@@ -1,8 +1,12 @@
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecoclean/controller/dialogHelper.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
+import 'package:flutter_ecoclean/views/editProfile/edit_profile.dart';
+import 'package:image_picker/image_picker.dart';
 import '../models/texto.dart';
 
 class Edit extends StatefulWidget{
@@ -11,6 +15,9 @@ class Edit extends StatefulWidget{
 }
 
 class EditState extends State<Edit> {
+
+  Uint8List? _img;
+
 
   String username = "";
   String userEmail = "";
@@ -47,6 +54,13 @@ class EditState extends State<Edit> {
     _loadUserInfo();
   }
 
+  void selectImage() async{
+    Uint8List image = await pickImage(ImageSource.gallery);
+    setState(() {
+      _img = image;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
@@ -67,8 +81,9 @@ class EditState extends State<Edit> {
               Center(
                 child: Stack(
                   children: [
-                    InkWell(
-                      onTap: () {},
+                    _img != null
+                        ? CircleAvatar(
+                    radius: 60,
                       child: Container(
                         width: 130,
                         height: 130,
@@ -84,7 +99,34 @@ class EditState extends State<Edit> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(userImage),
+                            image: MemoryImage(_img!),
+                          ),
+                        ),
+                      ),
+                    )
+                        : GestureDetector(
+                      onTap: () {
+                        selectImage();
+                      },
+                      child: CircleAvatar(
+                        radius: 60,
+                        child: Container(
+                          width: 130,
+                          height: 130,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 4, color: Colors.white),
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                blurRadius: 10,
+                                color: Colors.black.withOpacity(0.1),
+                              )
+                            ],
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(userImage),
+                            ),
                           ),
                         ),
                       ),
@@ -119,7 +161,17 @@ class EditState extends State<Edit> {
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
-                          // Agregar lógica para editar el nombre de usuario
+                          DialogHelper.editProfile(
+                            context,
+                            'Nombre',
+                            username,
+                                (newName) {
+                              setState(() {
+                                username = newName;
+                              });
+                              // Aquí puedes agregar la lógica para actualizar el nombre en Firebase Firestore
+                            },
+                          );
                         },
                       ),
                     ),
@@ -130,7 +182,17 @@ class EditState extends State<Edit> {
                       trailing: IconButton(
                         icon: Icon(Icons.edit),
                         onPressed: () {
-                          // Agregar lógica para editar el correo electrónico
+                          DialogHelper.editProfile(
+                            context,
+                            'Correo',
+                            userEmail,
+                                (newEmail) {
+                              setState(() {
+                                userEmail = newEmail;
+                              });
+                              // Aquí puedes agregar la lógica para actualizar el nombre en Firebase Firestore
+                            },
+                          );
                         },
                       ),
                     ),

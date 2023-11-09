@@ -179,7 +179,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildCards(String imagePath, String url) {
-    final link = Uri.parse(url);
+    final uri = Uri.parse(url);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10),
       width: 100,
@@ -193,7 +193,9 @@ class _HomeState extends State<Home> {
                 borderRadius: BorderRadius.circular(20),
                 child: InkWell(
                   onTap: ()  async {
-                    launchUrl(link);
+                    if (await canLaunchUrl(uri)){
+                      launchUrl(uri);
+                    }
                   },
                   child: Image.asset(
                     imagePath,
