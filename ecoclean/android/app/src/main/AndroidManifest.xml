@@ -31,6 +31,10 @@
         android:label="EcoClean Bogotá"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDYvcLIaPhftPEWJNDQn7p8ZzaTZ-iS5zc"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

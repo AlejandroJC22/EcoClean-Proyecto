@@ -28,7 +28,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDo8r1RoXctsqmnJmVLVAH9B4zDsaSRWKE"
+          "current_key": "AIzaSyAeoGOxNbe-KjQGxbiBRjD2llKXDPNE5eQ"
         }
       ],
       "services": {
@@ -37,6 +37,13 @@
             {
               "client_id": "773972437619-0a3002rk4m664pmd85a5trgfthlalrpv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "773972437619-ajuhhv87k51fgjggkpndvlmelnttjvc8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterEcoclean.RunnerTests"
+              }
             }
           ]
         }

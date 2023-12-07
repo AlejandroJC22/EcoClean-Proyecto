@@ -5,6 +5,8 @@ import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../controller/google_map.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -87,11 +89,11 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 10,
               ),
-              Card(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
+              SizedBox(
                 child: Container(
                   width: double.infinity,
                   height: 300,
+                  child: MapGoogle().buildGoogleMap(),
                 ),
               ),
               const SizedBox(
