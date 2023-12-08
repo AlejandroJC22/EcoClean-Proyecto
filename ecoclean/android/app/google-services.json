@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:773972437619:android:b229dda41cced83b2ad806",
+        "mobilesdk_app_id": "1:773972437619:android:8474bb8d6c15f6ab2ad806",
         "android_client_info": {
           "package_name": "com.example.flutter_ecoclean"
         }
       },
       "oauth_client": [
         {
-          "client_id": "773972437619-eok1n71v4t1t97hck3elhucrh0hbl8qu.apps.googleusercontent.com",
+          "client_id": "773972437619-1tvqd8rnmqqkunq95upsa6lhs9tb4t9j.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.flutter_ecoclean",
-            "certificate_hash": "bc305e47349231c22bb3c8fc16283e911dcac84f"
+            "certificate_hash": "e9e853dee64bb6f097015685a44fea51fd1ce4d9"
           }
         },
         {
@@ -28,7 +28,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAeoGOxNbe-KjQGxbiBRjD2llKXDPNE5eQ"
+          "current_key": "AIzaSyDYvcLIaPhftPEWJNDQn7p8ZzaTZ-iS5zc"
         }
       ],
       "services": {

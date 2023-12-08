@@ -91,6 +91,7 @@ class _HomeState extends State<Home> {
               ),
               SizedBox(
                 child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
                   width: double.infinity,
                   height: 300,
                   child: MapGoogle().buildGoogleMap(),

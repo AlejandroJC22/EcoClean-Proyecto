@@ -5,7 +5,7 @@ class MapGoogle {
 
   final CameraPosition initialCameraPosition = CameraPosition(
     target: LatLng(4.60971, -74.08175),
-    zoom: 4,
+    zoom: 10,
   );
 
   GoogleMap buildGoogleMap() {
