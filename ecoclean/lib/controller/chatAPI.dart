@@ -1,3 +1,3 @@
 
 //API key openAI
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "";
