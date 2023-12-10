@@ -77,7 +77,7 @@ class DialogHelper {
                 // Cancelar la edición
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar', style: TextStyle(color: Colors.red)),
+              child: const Text('Cancelar', style: TextStyle(color: Colors.red)),
             ),
             TextButton(
               onPressed: () async {
@@ -93,17 +93,35 @@ class DialogHelper {
 
                     final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
 
-                    if (field == 'Nombre') {
-                      await userRef.update({'nombre': newValue});
-                    } else if (field == 'Correo') {
-                      await userRef.update({'correo': newValue});
+                    try {
+                      if (field == 'Nombre') {
+                        await userRef.update({'nombre': newValue});
+                      } else if (field == 'Correo') {
+                        await userRef.update({'correo': newValue});
+                      }
+
+                      // Mostrar Snackbar si la actualización fue exitosa
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Datos actualizados correctamente'),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                    } catch (e) {
+                      // Mostrar Snackbar si la actualización falla
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No se pudo actualizar los datos'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
                     }
                   }
 
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Actualizar', style: TextStyle(color: Colors.green)),
+              child: const Text('Actualizar', style: TextStyle(color: Colors.green)),
             ),
           ],
         );

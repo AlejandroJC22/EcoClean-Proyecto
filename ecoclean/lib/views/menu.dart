@@ -6,14 +6,13 @@ import 'package:flutter_ecoclean/views/favoritos.dart';
 import 'package:flutter_ecoclean/views/home.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/login.dart';
-
-
 import '../models/texto.dart';
 
 class Menu extends StatefulWidget {
   @override
   MenuState createState() => MenuState();
 }
+
 
 class MenuState extends State<Menu> {
   String username = "";
@@ -85,16 +84,16 @@ class MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     final Responsive responsive = Responsive.of(context);
     return Container(
-        color: Colors.white,
-        child: Scaffold(
-          appBar: AppBar(
-            elevation: 0.0,
-            iconTheme: const IconThemeData(color: Colors.black),
-            backgroundColor: Colors.white,
-            title: const Text('EcoClean Bogotá', style: TextStyle(color: Colors.green)),
-            automaticallyImplyLeading: false,
-          ),
-          endDrawer: Drawer(
+      color: Colors.white,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          iconTheme: const IconThemeData(color: Colors.black),
+          backgroundColor: Colors.white,
+          title: const Text('EcoClean Bogotá', style: TextStyle(color: Colors.green)),
+          automaticallyImplyLeading: false,
+        ),
+        endDrawer: Drawer(
             child: Container(
               color: Colors.white,
               child: ListView(
@@ -148,10 +147,10 @@ class MenuState extends State<Menu> {
                   ),
                 ],
               ),
-          )
-          ),
-          body: _getDrawerItemWidget(_selectedDrawerItem),
+            )
         ),
+        body: _getDrawerItemWidget(_selectedDrawerItem),
+      ),
     );
   }
 }

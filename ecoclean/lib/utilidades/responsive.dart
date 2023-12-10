@@ -6,13 +6,13 @@ class Responsive {
   //Variables para calculo
   final double width, height, inch;
 
-
+  //Definir requerimientos de la clase
   Responsive({
     required this.width,
     required this.height,
     required this.inch,
   });
-  //
+  //Contenedor del tamaño de la diagonal del dispositivo
   factory Responsive.of(BuildContext context) {
     //Obtenemos la cantidad de pixeles de la pantalla
     final MediaQueryData data = MediaQuery.of(context);

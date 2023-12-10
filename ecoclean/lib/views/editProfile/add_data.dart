@@ -3,18 +3,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+//Conexión con el almacenamiento de firebase
 final FirebaseStorage _storage = FirebaseStorage.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+//Clase para guardar la imagen en el almacenamiento de Firebase
 class StoreData {
   Future<String> uploadImage(String childName, String userId, Uint8List file) async {
+    //Le asignamos el id a la imagen subida por el usuario
     Reference ref = _storage.ref().child(childName).child(userId);
+    //Subimos el archivo a la base de datos
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snapshot = await uploadTask;
+    //Obtenemos la url para mostrarlo por pantalla
     String urlImage = await snapshot.ref.getDownloadURL();
+    //Retornamos la url
     return urlImage;
   }
-
+  //Almacenar los datos editados por el usuario
   Future<void> saveData({required Uint8List file, required String userId}) async {
     try {
       String imageUrl = await uploadImage('profileImages', userId, file);
@@ -30,7 +36,7 @@ class StoreData {
       print(e.toString());
     }
   }
-
+  //Eliminar los datos del usuario
   Future<void> deleteData(String userId) async {
     try {
       // Obtener el usuario actual
