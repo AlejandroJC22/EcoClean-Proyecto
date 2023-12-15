@@ -58,7 +58,7 @@ class _ChatBotPageState extends State<ChatBotPage> {
       //AppBar identificador de ventana
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("CatBot EcoClean", style: TextStyle(color: Colors.white),),
+        title: const Text("ChatBot EcoClean", style: TextStyle(color: Colors.white),),
         //Icono de regreso
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white70,),

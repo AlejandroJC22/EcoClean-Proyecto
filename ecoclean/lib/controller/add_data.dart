@@ -2,10 +2,23 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 //Conexión con el almacenamiento de firebase
 final FirebaseStorage _storage = FirebaseStorage.instance;
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+//Obtener la imagen seleccionada por el usuario
+pickImage(ImageSource source) async{
+  final ImagePicker imagePicker = ImagePicker();
+  //Clasificar los datos de la imagen
+  XFile? _file = await imagePicker.pickImage(source: source);
+
+  //Enviar los datos a add_data
+  if(_file != null){
+    return await _file.readAsBytes();
+  }
+}
 
 //Clase para guardar la imagen en el almacenamiento de Firebase
 class StoreData {

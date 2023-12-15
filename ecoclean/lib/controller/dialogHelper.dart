@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecoclean/controller/add_data.dart';
 import 'package:flutter_ecoclean/models/inputs.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
-import 'package:flutter_ecoclean/views/editProfile/add_data.dart';
+import 'package:flutter_ecoclean/views/favoritos.dart';
 import 'package:flutter_ecoclean/views/login.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -98,6 +99,10 @@ class DialogHelper {
                         await userRef.update({'nombre': newValue});
                       } else if (field == 'Correo') {
                         await userRef.update({'correo': newValue});
+                      } else if (field == "Casa"){
+                        await userRef.update({'direccion_casa': newValue});
+                      }else if (field == "Trabajo"){
+                        await userRef.update({'direccion_trabajo': newValue});
                       }
 
                       // Mostrar Snackbar si la actualización fue exitosa
@@ -255,8 +260,6 @@ class DialogHelper {
     );
   }
 
-
-
   //Ventana para seleccionar metodo de cambio de imagen
   static void showOptions(BuildContext context, Function(ImageSource) onSelect) {
     showDialog(
@@ -301,28 +304,145 @@ class DialogHelper {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirmación"),
-          content: Text("¿Estás seguro de que quieres eliminar todos los datos?\n Esta acción es irreversible"),
+          title: const Text("Confirmación"),
+          content: const Text("¿Estás seguro de que quieres eliminar todos los datos?\n Esta acción es irreversible"),
           actions: [
             TextButton(
-              child: Text("Cancelar", style: TextStyle(color: Colors.green)),
+              child: const Text("Cancelar", style: TextStyle(color: Colors.green)),
               onPressed: () {
                 Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
               },
             ),
             TextButton(
-              child: Text("Aceptar", style: TextStyle(color: Colors.red),),
+              child: const Text("Aceptar", style: TextStyle(color: Colors.red),),
               onPressed: () async {
                 // Crear una instancia de StoreData
                 StoreData storeData = StoreData();
 
                 // Llamar al método deleteData en la instancia creada
                 await storeData.deleteData(id);
+                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
                 // Puedes redirigir a la pantalla de inicio de sesión después de eliminar los datos
+                // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => Login()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static void location(BuildContext context, String address, Function(String) onLocationTypeSelected) async {
+    TextEditingController addressController = TextEditingController(text: address);
+
+    String locationType = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Detalles de la ubicación'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: addressController,
+                ),
+                const SizedBox(height: 10),
+                const Text('¿Dónde estás ahora?'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context, 'Casa');
+                      },
+                      child: Text('Casa'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context, 'Trabajo');
+                      },
+                      child: Text('Trabajo'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (addressController.text.isNotEmpty) {
+      String? uid = FirebaseAuth.instance.currentUser?.uid;
+
+      if (uid != null) {
+        String collectionName = 'users';
+        String documentName = uid; // Use the UID as the document name
+
+        // Update the specific document for the user
+        FirebaseFirestore.instance.collection(collectionName).doc(documentName).update({
+          locationType == 'Casa' ? 'direccion_casa' : 'direccion_trabajo': addressController.text,
+        });
+      }
+    }
+
+    onLocationTypeSelected(locationType);
+  }
+
+  static void confirmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Confirmación"),
+          content: const Text("¿Estás seguro de que quieres eliminar las rutas?"),
+          actions: [
+            TextButton(
+              child: const Text("Cancelar", style: TextStyle(color: Colors.green)),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+              },
+            ),
+            TextButton(
+              child: const Text("Aceptar", style: TextStyle(color: Colors.red)),
+              onPressed: () async {
+                // Obtener el UID del usuario autenticado
+                String uid = FirebaseAuth.instance.currentUser!.uid;
+
+                // Actualizar las rutas en la base de datos
+                try {
+                  // Actualizar las rutas en tu base de datos, por ejemplo, usando Firebase Firestore
+                  await FirebaseFirestore.instance.collection('users').doc(uid).update({
+                    'direccion_casa': '',
+                    'direccion_trabajo': '',
+                  });
+
+                  print('Rutas eliminadas correctamente.');
+                } catch (e) {
+                  print('Error al eliminar las rutas: $e');
+                }
+
+                Navigator.of(context).pop();
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Rutas eliminadas correctamente.'),
+                  ),
                 );
               },
             ),

@@ -1,98 +1,106 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecoclean/controller/google_map.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/chatBotAi.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../controller/google_map.dart';
-
+// Clase principal que representa la pantalla principal de la aplicación.
 class Home extends StatefulWidget {
-  const Home({super.key});
-
+  const Home({Key? key}) : super(key: key);
   @override
   State<Home> createState() => _HomeState();
 }
 
+// Estado de la pantalla principal.
 class _HomeState extends State<Home> {
-  // Variable para almacenar el nombre de usuario
+  // Variable para almacenar el nombre de usuario.
   String username = "";
-  // Variable para almacenar la ubicación del usuario
+
+  // Variable para almacenar la ubicación actual del usuario.
   LocationData? currentLocation;
 
-  //Inicializar los procesos
+  // Método que se llama al inicializar el estado de la pantalla.
   @override
   void initState() {
     super.initState();
+    // Inicializar la carga de la información del usuario.
     _loadUserInfo();
   }
 
-  //Cargar los datos de la base de datos
+
+  // Método asincrónico para cargar la información del usuario.
   Future<void> _loadUserInfo() async {
-    //Obtener los datos del usuario autenticado
+    // Obtener el usuario actualmente autenticado.
     final User? user = FirebaseAuth.instance.currentUser;
 
-    //Si el usuario existe, obtener los datos de la base de datos
     if (user != null) {
+      // Obtener el documento del usuario desde Firestore.
       final DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .get();
 
-      //Buscar el nombre y mostrarlo en pantalla
+      // Verificar si existe el documento del usuario en Firestore.
       if (userDoc.exists) {
+        // Obtener los datos del usuario como un mapa.
         final userData = userDoc.data() as Map<String, dynamic>;
 
-        // Verificar que las propiedades existen y no son nulas antes de acceder a ellas
+        // Verificar si el campo 'nombre' existe en los datos del usuario.
         if (userData['nombre'] != null) {
+          // Actualizar el estado con el nombre del usuario.
           setState(() {
-            //Variable que almacena el nombre
             username = userData['nombre'];
           });
         }
-        //Si no encuentra datos mostrar error
       } else {
+        // Imprimir mensaje si no se encuentra el documento del usuario en Firestore.
         print('No se encontraron datos del usuario en Firestore');
       }
-      //Si no se puede conectar a la base de datos, mostrar error
     } else {
+      // Imprimir mensaje si no se puede obtener el usuario actual.
       print('No se pudo obtener el usuario actual');
     }
 
-    // Obtener la ubicación del usuario
+    // Inicializar la instancia de Location.
     final Location location = Location();
-    //Esperamos que el usuario nos de acceso a su ubicación
     try {
+      // Obtener la ubicación actual del usuario.
       final LocationData locationData = await location.getLocation();
+      // Actualizar el estado con la ubicación actual.
       setState(() {
-        //Almacenar la ubicación
         currentLocation = locationData;
       });
-      //Si no da permiso mostrar error
     } catch (e) {
+      // Imprimir mensaje si hay un error al obtener la ubicación.
       print("Error obtaining location: $e");
     }
   }
 
-  //Construir la vista
+
+  // Método para construir la interfaz de la pantalla principal.
   @override
   Widget build(BuildContext context) {
-    //Asignar tamaño dependiendo la diagonal obtenida
+    // Instancia de la clase Responsive para gestionar la responsividad del diseño.
     final Responsive responsive = Responsive.of(context);
+
+    // Estructura principal del widget.
     return Scaffold(
-      //Retornar una lista
+      // Contenedor principal que abarca toda la pantalla.
       body: Container(
         color: Colors.white,
         child: SingleChildScrollView(
           child: Column(
             children: [
+              // Espaciado superior
               const SizedBox(
                 height: 20,
               ),
-              //Titulo inicial con el nombre del usuario
+              // Contenedor para mostrar el saludo al usuario
               Container(
                 alignment: Alignment.bottomLeft,
                 margin: const EdgeInsets.only(left: 15),
@@ -101,61 +109,37 @@ class _HomeState extends State<Home> {
                   style: TextStyles.tituloNegro(responsive),
                 ),
               ),
-              //Espaciado entre campos
+              // Espaciado adicional
               const SizedBox(
                 height: 30,
               ),
-              //Subtitulo del contenido
+              // Título para las rutas cercanas
               Container(
-                  alignment: Alignment.centerRight,
-                  margin: const EdgeInsets.only(right: 15),
-                  child: Text(
-                    "Rutas cerca de ti",
-                    style: TextStyles.subtitulos(responsive),
-                  )
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsets.only(right: 15),
+                child: Text(
+                  "Rutas cerca de ti",
+                  style: TextStyles.subtitulos(responsive),
+                ),
               ),
-              //Espaciado entre campos
+              // Espaciado adicional
               const SizedBox(
                 height: 10,
               ),
-              //Mostrar mapa con la ubicación del usuario
+              // Contenedor para mostrar el mapa con las rutas
               SizedBox(
                 child: Container(
-                  //Tamaño y posición del mapa
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   width: double.infinity,
                   height: 300,
-                  //Si se permite la ubicación mostrarla en el mapa
-                  child: currentLocation != null
-                      ? MapGoogle().buildGoogleMap(
-                    LatLng(
-                      //Posición en coordenadas del usuario, logica del mapa en google_map.dart
-                      currentLocation!.latitude!,
-                      currentLocation!.longitude!,
-                    ),
-                  )
-                  //Mientras se accede a la ubicación, mostrar simbolo de carga
-                      : const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //Circulo de carga
-                      CircularProgressIndicator(),
-                      //tamaño del circulo
-                      SizedBox(height: 10),
-                      //texto guia
-                      Text(
-                        'Calculando ruta...',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
+                  child: GoogleMapWidget(userLocation: currentLocation),
                 ),
               ),
-              //Espaciado entre campos
+              // Espaciado adicional
               const SizedBox(
                 height: 15,
               ),
-              //Subtitulo guia
+              // Título para las empresas prestadoras del servicio
               Container(
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(right: 15),
@@ -164,44 +148,46 @@ class _HomeState extends State<Home> {
                   style: TextStyles.subtitulos(responsive),
                 ),
               ),
-              //Espaciado entre campos
+              // Espaciado adicional
               const SizedBox(
                 height: 10,
               ),
-              //Espacio para visualizar empresas prestadoras del servicio
+              // Tarjeta deslizable con enlaces a empresas prestadoras del servicio
               Card(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: SizedBox(
-                  //Tamaño del espacio
                   width: double.infinity,
                   height: 100,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      //Información de cada empresa junto a link de acceso
-                      buildCards('lib/iconos/bogota_limpia.png',
+                      buildCards(
+                          'lib/iconos/bogota_limpia.png',
                           'https://www.bogotalimpia.com/'),
                       SizedBox(width: 15),
-                      buildCards('lib/iconos/ciudad_limpia.jpg',
+                      buildCards(
+                          'lib/iconos/ciudad_limpia.jpg',
                           'https://www.ciudadlimpia.com.co/'),
                       SizedBox(width: 15),
-                      buildCards('lib/iconos/lime.jpeg',
-                          'https://www.lime.net.co/'),
+                      buildCards(
+                          'lib/iconos/lime.jpeg', 'https://www.lime.net.co/'),
                       SizedBox(width: 15),
-                      buildCards('lib/iconos/area_limpia.png',
+                      buildCards(
+                          'lib/iconos/area_limpia.png',
                           'https://arealimpia.com.co/'),
                       SizedBox(width: 15),
-                      buildCards('lib/iconos/promoambiental.png',
+                      buildCards(
+                          'lib/iconos/promoambiental.png',
                           'https://www.promoambientaldistrito.com/'),
                     ],
                   ),
-                )
+                ),
               ),
-              //Espaciado entre campos
+              // Espaciado adicional
               const SizedBox(
                 height: 20,
               ),
-              //Subtitulo guia
+              // Elemento de lista con enlace al ChatBot
               ListTile(
                 title: Text(
                   '¿Tienes dudas?',
@@ -213,15 +199,13 @@ class _HomeState extends State<Home> {
                   style: TextStyles.enlaces(responsive),
                   textAlign: TextAlign.center,
                 ),
-                //Boton ChatBot
                 trailing: InkWell(
                   onTap: () {
-                    //Dirigir a la pantalla del chatbot
+                    // Navegar a la página del ChatBot al hacer clic en el ícono de burbuja de chat.
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ChatBotPage(),
                     ));
                   },
-                  //Diseño del boton
                   child: Container(
                     margin: const EdgeInsets.only(right: 10),
                     width: 60,
@@ -230,12 +214,11 @@ class _HomeState extends State<Home> {
                       shape: BoxShape.circle,
                       color: Colors.black,
                     ),
-                    //Alineación del icono del boton
                     child: const Center(
                       child: Icon(
                         Icons.chat_bubble,
                         color: Colors.white,
-                        size: 30, // Color del icono
+                        size: 30,
                       ),
                     ),
                   ),
@@ -248,28 +231,30 @@ class _HomeState extends State<Home> {
     );
   }
 
-  //Diseño de la lista horizontal imagenes de empresas prestadoras del servicio
+  // Método para construir tarjetas deslizables con imágenes y enlaces a empresas prestadoras de servicio.
   Widget buildCards(String imagePath, String url) {
-    //Acceso a internet
+    // Crear instancia de Uri a partir de la cadena de URL proporcionada.
     final uri = Uri.parse(url);
+
+    // Retornar un contenedor con la tarjeta deslizable.
     return Container(
-      //Alineación y tamaño
       margin: const EdgeInsets.symmetric(horizontal: 10),
       width: 100,
       height: 100,
-      //Diseño columna
       child: Column(
         children: [
+          // Widget expandido para ajustar la relación de aspecto de la imagen.
           Expanded(
-            //Diseño circular en los bordes
             child: AspectRatio(
               aspectRatio: 4 / 3,
+              // Recortar y redondear las esquinas de la imagen.
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                //Abrir navegador al pulsar sobre la imagen
                 child: InkWell(
-                  onTap: ()  async {
-                    if (await canLaunchUrl(uri)){
+                  // Configurar acción al hacer clic en la imagen.
+                  onTap: () async {
+                    // Verificar si se puede lanzar la URL y abrir el enlace.
+                    if (await canLaunchUrl(uri)) {
                       launchUrl(uri);
                     }
                   },
@@ -285,4 +270,5 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 }

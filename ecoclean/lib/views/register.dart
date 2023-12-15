@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_ecoclean/controller/terms_and_privacy.dart';
 import 'package:flutter_ecoclean/models/inputs.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/login.dart';
@@ -173,7 +174,7 @@ class _RegisterState extends State<Register> {
               const SizedBox(height: 15),
               // Creamos un botón para validar los datos y enviarlos a la base de datos
               Container(
-                margin: const EdgeInsets.all(15),
+                margin: const EdgeInsets.only(top: 15, left: 15, right: 15),
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
@@ -185,8 +186,11 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
+              Container(
+                child: TextAndPrivacy.getRichText(context),
+              ),
               // Margen entre textos
-              const SizedBox(height: 15),
+              const SizedBox(height: 30),
               // En caso de tener cuenta, volvemos a la pantalla de inicio de sesión
               Container(
                 alignment: Alignment.bottomCenter,

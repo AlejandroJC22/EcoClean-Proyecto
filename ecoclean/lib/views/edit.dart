@@ -5,8 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/dialogHelper.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
-import 'package:flutter_ecoclean/views/editProfile/add_data.dart';
-import 'package:flutter_ecoclean/views/editProfile/edit_profile.dart';
+import 'package:flutter_ecoclean/controller/add_data.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/texto.dart';
 

@@ -21,4 +21,5 @@ Future<User?> signInWithEmail(BuildContext context, String email, String passwor
     print('Sign-in error: $e');
     DialogHelper.showAlertDialog(context, "Verifica los datos", "Usuario o contraseña incorrectos.");
   }
+  return null;
   }

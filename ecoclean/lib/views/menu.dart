@@ -59,7 +59,7 @@ class MenuState extends State<Menu> {
       case 1:
         return Edit();
       case 2:
-        return Favorites();
+        return FavoritosScreen();
       default:
         return Home();
     }

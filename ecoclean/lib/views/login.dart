@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/google_signIn.dart';
+import 'package:flutter_ecoclean/controller/terms_and_privacy.dart';
 import 'package:flutter_ecoclean/controller/twitter_signIn.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
@@ -208,7 +209,12 @@ class _loginpageState extends State<Login> {
                           ),
                         )
                       ],
-                    )
+                    ),
+                    SizedBox(height: 9,),
+                    Container(
+                      child: TextAndPrivacy.getRichText(context),
+                    ),
+                    SizedBox(height: 5,)
                   ],
                 )
               ],
