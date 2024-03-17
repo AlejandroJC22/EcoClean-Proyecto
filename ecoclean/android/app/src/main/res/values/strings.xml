@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EcoClean</string>
+    <string name="facebook_app_id">1566765984096832</string>
+    <string name="fb_login_protocol_scheme">fb1566765984096832</string>
+    <string name="facebook_client_token">5f7af3b8451489e4bfbb2c57289b36e0</string>
+</resources>
