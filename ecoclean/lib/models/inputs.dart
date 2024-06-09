@@ -1,46 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecoclean/models/texto.dart';
+import 'package:flutter_ecoclean/utilidades/responsive.dart';
 
-import '../utilidades/responsive.dart';
-
-//Clase para definir diseño en inputs del proyecto
-class Inputs extends StatelessWidget {
-  // Definimos variables y controladores
-  final TextEditingController controller;
-  final String labelText;
-  final bool obscureText;
-
-  // Controlamos los datos ingresados por el usuario
-  Inputs({
-    required this.controller,
-    required this.labelText,
-    this.obscureText = false,
-  });
+class TextFieldContainer extends StatelessWidget{
+  final Widget child;
+  const TextFieldContainer({super.key,
+    required this.child,
+});
 
   @override
-  Widget build(BuildContext context) {
-    // Llamamos la clase del tamaño de pantalla
-    final Responsive responsive = Responsive.of(context);
-    // Construimos la vista
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15),
-      child: TextFormField(
-        // Llamamos al controlador para almacenar los datos ingresados
-        controller: controller,
-        // Si es contraseña ocultamos el texto
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          // Decoracion del input
-          labelText: labelText,
-          labelStyle: TextStyles.enlaces(responsive),
+  Widget build(BuildContext context){
+    Responsive responsive = Responsive.of(context);
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        width: responsive.width * 0.9,
+        decoration: BoxDecoration(
+          color: const Color.fromRGBO(231, 231, 231, 0.3),
+          borderRadius: BorderRadius.circular(29),
         ),
-        style: TextStyles.textoSinNegrita(responsive),
+        child: child,
       ),
     );
   }
+
 }
-
-
-
-
-

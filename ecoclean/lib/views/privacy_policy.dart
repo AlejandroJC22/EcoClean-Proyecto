@@ -66,7 +66,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               title: Text("1.1  Datos de Localización", style: TextStyles.subtitulos(responsive)),
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Text(
                     'La aplicación utiliza servicios de localización para proporcionar información sobre rutas de recolección de los vehículos de recolección de basuras de la ciudad.',
                     style: TextStyles.textoSinNegrita(responsive),
@@ -79,7 +79,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 title: Text("1.2  Datos del ChatBot", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Las interacciones con el ChatBot no son almacenadas, puesto que pueden manejar información sensible de estas conversaciones.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -97,7 +97,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 title: Text("2.1  Comunicaciones", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Podemos utilizar tu información para enviarte notificaciones importantes sobre cambios en la aplicación, actualizaciones de servicios o eventos relevantes.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -115,7 +115,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 title: Text("3.1  Medidas de Seguridad", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Implementamos medidas de seguridad para proteger tu información contra el acceso no autorizado, la alteración, la divulgación o la destrucción no autorizada.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -133,7 +133,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 title: Text("4.1  Acceso y Modificación", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Puedes acceder y modificar tu información personal en la sección de perfil de la aplicación.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -146,7 +146,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                 title: Text("4.2  Eliminación de Datos", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Si deseas eliminar tu cuenta y la información asociada, puedes hacerlo a través de la configuración de la aplicación.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -165,7 +165,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               //permitir la copia del correo electronico
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   //Obtener la información al pulsar la pantalla
                   child: GestureDetector(
                     onTap: () {
@@ -211,7 +211,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
             //Permitir ir a terminos y condiciones
             GestureDetector(
               child: Container(
-                margin: EdgeInsets.only(left: 15,),
+                margin: const EdgeInsets.only(left: 15,),
                 child: Text(
                   "Terminos y Condiciones",
                   style: TextStyles.subtitulos(responsive),

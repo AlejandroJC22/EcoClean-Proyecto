@@ -66,7 +66,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("1.1  Licencia de Uso", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Te concedemos una licencia limitada, no exclusiva y no transferible para utilizar EcoClean Bogotá con fines personales y no comerciales.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -79,7 +79,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("1.2  Requisitos del usuario", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Debes ser mayor de edad o contar con el consentimiento de un padre o tutor para utilizar la aplicación. Te comprometes a proporcionar información precisa y mantener tu cuenta segura.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -96,7 +96,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("2.1  Derechos de Autor", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Todos los derechos de autor, marcas comerciales y otros derechos de propiedad intelectual relacionados con EcoClean Bogotá son propiedad nuestra o de nuestros licenciantes.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -109,7 +109,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("2.2  Uso Adecuado", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'No debes copiar, reproducir, distribuir, transmitir, mostrar, vender, licenciar ni explotar de ninguna otra manera el contenido de EcoClean Bogotá sin nuestro consentimiento.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -127,7 +127,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("3.1  Uso Adecuado", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Te comprometes a utilizar la aplicación de manera ética y legal. No debes realizar actividades que puedan dañar, deshabilitar o sobrecargar la aplicación.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -140,7 +140,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("3.2  Limitación de Responsabilidad", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'No somos responsables de los daños directos, indirectos, incidentales, especiales o consecuentes que puedan surgir del uso de EcoClean Bogotá.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -158,7 +158,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 title: Text("4.1  Terminación", style: TextStyles.subtitulos(responsive)),
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       'Podemos terminar o suspender tu acceso a EcoClean Bogotá en cualquier momento, sin previo aviso, si violas estos Términos del Servicio.',
                       style: TextStyles.textoSinNegrita(responsive),
@@ -177,7 +177,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
               //permitir la copia del correo electronico
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   //Obtener la información al pulsar la pantalla
                   child: GestureDetector(
                     onTap: () {
@@ -222,7 +222,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
             //Permitir ir a terminos y condiciones
             GestureDetector(
               child: Container(
-                margin: EdgeInsets.only(left: 15,),
+                margin: const EdgeInsets.only(left: 15,),
                 child: Text(
                   "Política de Privacidad",
                   style: TextStyles.subtitulos(responsive),
@@ -244,7 +244,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
   Widget _buildSectionTitle(String title, Responsive responsive) {
     return Container(
       padding: const EdgeInsets.only(top: 15),
-      margin: EdgeInsets.only(left: 15, right: 15),
+      margin: const EdgeInsets.only(left: 15, right: 15),
       child: Text(
         title,
         textAlign: TextAlign.center,
@@ -257,7 +257,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
   Widget _buildSectionSubtitle(String title, Responsive responsive) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15),
-      margin: EdgeInsets.only(left: 15),
+      margin: const EdgeInsets.only(left: 15),
       child: Text(
         title,
         textAlign: TextAlign.start,

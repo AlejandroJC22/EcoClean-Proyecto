@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,11 +14,11 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 pickImage(ImageSource source) async{
   final ImagePicker imagePicker = ImagePicker();
   //Clasificar los datos de la imagen
-  XFile? _file = await imagePicker.pickImage(source: source);
+  XFile? file = await imagePicker.pickImage(source: source);
 
   //Enviar los datos a add_data
-  if(_file != null){
-    return await _file.readAsBytes();
+  if(file != null){
+    return await file.readAsBytes();
   }
 }
 

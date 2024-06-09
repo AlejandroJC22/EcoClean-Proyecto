@@ -1,11 +1,15 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/add_data.dart';
 import 'package:flutter_ecoclean/models/inputs.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
-import 'package:flutter_ecoclean/views/favoritos.dart';
 import 'package:flutter_ecoclean/views/login.dart';
+import 'package:flutter_ecoclean/views/menu.dart';
+import 'package:flutter_ecoclean/views/privacy_policy.dart';
+import 'package:flutter_ecoclean/views/terms_and_conditions.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../utilidades/responsive.dart';
@@ -47,7 +51,7 @@ class DialogHelper {
               onPressed: () {
                 Navigator.of(context).pop();
                 // Cerrar la ventana actual al ser registro exitoso
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Login()));
               },
               child: const Text("Aceptar", style: TextStyle(color: Colors.green)),
             ),
@@ -140,37 +144,55 @@ class DialogHelper {
     TextEditingController currentPasswordController = TextEditingController();
     TextEditingController newPasswordController = TextEditingController();
     TextEditingController confirmPasswordController = TextEditingController();
+    bool obscureText = true;
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Cambiar contraseña'),
+          title: const Text('Cambiar contraseña'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Inputs(
+                TextFieldContainer(
+                  child: TextField(
+                  obscureText: obscureText,
                   controller: currentPasswordController,
-                  labelText: "Contraseña Actual",
-                  obscureText: true,
-                ),
-                Inputs(
+                  decoration: InputDecoration(
+                    hintText: 'Contraseña antigua',
+                    icon: Icon(Icons.lock, color:Colors.green[100]),
+                    border: InputBorder.none
+                  ),
+                )),
+                const SizedBox(height: 3,),
+                TextFieldContainer(
+                  child: TextField(
+                  obscureText: obscureText,
                   controller: newPasswordController,
-                  labelText: "Nueva contraseña",
-                  obscureText: false,
-                ),
-                Inputs(
+                  decoration: InputDecoration(
+                    hintText: 'Contraseña nueva',
+                    icon: Icon(Icons.lock, color:Colors.green[100]),
+                    border: InputBorder.none
+                  ),
+                )),
+                const SizedBox(height: 3,),
+                TextFieldContainer(
+                  child: TextField(
+                  obscureText: obscureText,
                   controller: confirmPasswordController,
-                  labelText: "Confirmar nueva contraseña",
-                  obscureText: true,
-                ),
+                  decoration: InputDecoration(
+                    hintText: 'Confirmar contraseña',
+                    icon: Icon(Icons.lock, color:Colors.green[100]),
+                    border: InputBorder.none
+                  ),
+                )),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ForgotPass()));
+                            builder: (context) => const ForgotPass()));
                   },
                   child: Text('Olvidé mi contraseña', style: TextStyles.preguntas(responsive)),
                 ),
@@ -183,7 +205,7 @@ class DialogHelper {
                 // Cancelar la edición
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar', style: TextStyle(color: Colors.red)),
+              child: const Text('Cancelar', style: TextStyle(color: Colors.red)),
             ),
             TextButton(
               onPressed: () async {
@@ -252,7 +274,7 @@ class DialogHelper {
                   );
                 }
               },
-              child: Text('Actualizar', style: TextStyle(color: Colors.green)),
+              child: const Text('Actualizar', style: TextStyle(color: Colors.green)),
             ),
           ],
         );
@@ -266,15 +288,15 @@ class DialogHelper {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Seleccionar imagen desde:'),
+          title: const Text('Seleccionar imagen desde:'),
           actions: [
             ListTile(
               onTap: () {
                 Navigator.of(context).pop();
                 onSelect(ImageSource.gallery); // Ir a la galería
               },
-              leading: Icon(Icons.photo),
-              title: Text('Galería'),
+              leading: const Icon(Icons.photo),
+              title: const Text('Galería'),
             ),
 
             ListTile(
@@ -282,16 +304,16 @@ class DialogHelper {
                 Navigator.of(context).pop();
                 onSelect(ImageSource.camera); // Usar la cámara
               },
-              leading: Icon(Icons.camera_alt),
-              title: Text('Cámara'),
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Cámara'),
             ),
 
             ListTile(
               onTap: () {
                 Navigator.of(context).pop(); // Cancelar
               },
-              leading: Icon(Icons.cancel, color: Colors.red),
-              title: Text('Cancelar'),
+              leading: const Icon(Icons.cancel, color: Colors.red),
+              title: const Text('Cancelar'),
             ),
           ],
         );
@@ -321,13 +343,11 @@ class DialogHelper {
 
                 // Llamar al método deleteData en la instancia creada
                 await storeData.deleteData(id);
-                // ignore: use_build_context_synchronously
                 Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
                 // Puedes redirigir a la pantalla de inicio de sesión después de eliminar los datos
-                // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => Login()),
+                  MaterialPageRoute(builder: (context) => const Login()),
                 );
               },
             ),
@@ -338,9 +358,8 @@ class DialogHelper {
   }
 
   static void location(BuildContext context, String address, Function(String) onLocationTypeSelected) async {
-    TextEditingController addressController = TextEditingController(text: address);
-
-    String locationType = await showDialog(
+  TextEditingController addressController = TextEditingController(text: address);
+    String? locationType = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -362,13 +381,13 @@ class DialogHelper {
                       onPressed: () {
                         Navigator.pop(context, 'Casa');
                       },
-                      child: Text('Casa'),
+                      child: const Text('Casa'),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context, 'Trabajo');
                       },
-                      child: Text('Trabajo'),
+                      child: const Text('Trabajo'),
                     ),
                   ],
                 ),
@@ -380,14 +399,14 @@ class DialogHelper {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cerrar'),
+              child: const Text('Cerrar'),
             ),
           ],
         );
       },
     );
 
-    if (addressController.text.isNotEmpty) {
+    if (locationType != null && addressController.text.isNotEmpty) {
       String? uid = FirebaseAuth.instance.currentUser?.uid;
 
       if (uid != null) {
@@ -399,10 +418,11 @@ class DialogHelper {
           locationType == 'Casa' ? 'direccion_casa' : 'direccion_trabajo': addressController.text,
         });
       }
-    }
 
-    onLocationTypeSelected(locationType);
+      onLocationTypeSelected(locationType);
+    }
   }
+
 
   static void confirmDialog(BuildContext context) {
     showDialog(
@@ -437,7 +457,12 @@ class DialogHelper {
                   print('Error al eliminar las rutas: $e');
                 }
 
-                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Menu()
+                  )
+                );
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
@@ -449,6 +474,167 @@ class DialogHelper {
           ],
         );
       },
+    );
+  }
+
+  static void showCitys (BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text("Seleccionar ciudad"),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Text('Ciudades disponibles'),
+                const Divider(),
+                ListTile(
+                  title: const Text('Bogotá'),
+                  trailing: const Icon(Icons.check, color: Colors.green,),
+                  onTap: (){
+                    Navigator.of(context).pop();
+                  },
+                ),
+                const Divider(),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+              }, 
+              child: const Text("Cancelar", style: TextStyle(color: Colors.red)),
+            ),
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              }, 
+              child: const Text("Aceptar", style: TextStyle(color: Colors.green)), 
+            ),
+          ],
+        );
+      }
+    );
+  }
+  static void showNotifications(BuildContext context, int selectedNotificationOption, Function(int) onOptionSelected) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text("Notificaciones"),
+              content: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Divider(),
+                    ListTile(
+                      title: const Text('Todas las notificaciones'),
+                      trailing: selectedNotificationOption == 0
+                          ? const Icon(Icons.check, color: Colors.green)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          selectedNotificationOption = 0;
+                          onOptionSelected(0);
+                        });
+                      },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      title: const Text('Solo alertas'),
+                      trailing: selectedNotificationOption == 1
+                          ? const Icon(Icons.check, color: Colors.green)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          selectedNotificationOption = 1;
+                          onOptionSelected(1);
+                        });
+                      },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      title: const Text('Notificaciones Deshabilitadas'),
+                      trailing: selectedNotificationOption == 2
+                          ? const Icon(Icons.check, color: Colors.green)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          selectedNotificationOption = 2;
+                          onOptionSelected(2);
+                        });
+                      },
+                    ),
+                    const Divider(),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+                  },
+                  child: const Text("Cancelar", style: TextStyle(color: Colors.red)),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Aceptar", style: TextStyle(color: Colors.green)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  static void showInfo (BuildContext context) {
+    showDialog(
+      context: context, 
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: const Text("Acerca de"),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                const Divider(),
+                ListTile(
+                  title: const Text("Politica de Privacidad"),
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PrivacyPolicy()),
+                    );
+                  },
+                ),
+                const Divider(),
+                ListTile(
+                  title: const Text("Terminos y condiciones"),
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const TermsAndConditions()),
+                    );
+                  },
+                ),
+                const Divider(),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              }, 
+              child: const Text('Cancelar', style: TextStyle(color: Colors.red),)
+            )
+          ],
+        );
+      }
     );
   }
 

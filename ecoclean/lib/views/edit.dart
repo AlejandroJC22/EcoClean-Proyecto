@@ -11,6 +11,8 @@ import '../models/texto.dart';
 
 //Clase editar que permite mostrar la ventana
 class Edit extends StatefulWidget{
+  const Edit({super.key});
+
   @override
   //Instancia que crea la vista editar
   EditState createState() => EditState();
@@ -59,24 +61,32 @@ class EditState extends State<Edit> {
     super.initState();
     _loadUserInfo();
   }
-  //Si selecciona cambiar imagen por galeria, llamar a la eit_profile
-  void selectImage() async{
-    Uint8List image = await pickImage(ImageSource.gallery);
-    setState(() {
-      _img = image;
-    });
-    //Guardar los datos
-    StoreData().saveData(file: _img!, userId: id);
+  // Si selecciona la cámara obtener la imagen
+  void cameraImage() async {
+    Uint8List? image = await pickImage(ImageSource.camera);
+    if (image == null) {
+      return;
+    } else {
+      setState(() {
+        _img = image;
+      });
+      // Guardar los datos
+      StoreData().saveData(file: _img!, userId: id);
+    }
   }
 
-  //Si selecciona la camara obtener la imagen
-  void cameraImage() async{
-    Uint8List image = await pickImage(ImageSource.camera);
-    setState(() {
-      _img = image;
-    });
-    //Guardar los datos
-    StoreData().saveData(file: _img!, userId: id);
+  // Si selecciona cambiar imagen por galería, llamar a la edit_profile
+  void selectImage() async {
+    Uint8List? image = await pickImage(ImageSource.gallery);
+    if (image == null) {
+      return;
+    } else {
+      setState(() {
+        _img = image;
+      });
+      // Guardar los datos
+      StoreData().saveData(file: _img!, userId: id);
+    }
   }
 
   //Construir la vista
@@ -196,103 +206,101 @@ class EditState extends State<Edit> {
               //Espaciado entre campos
               const SizedBox(height: 15),
               //Parametros para edición
-              Container(
-                child: Column(
-                  children: [
-                    ListTile(
-                    //Primer apartado, edicion de perfil
-                      title: Text('Nombre de usuario'),
-                      //Mostrar nombre actual
-                      subtitle: Text(username),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        //Si oprime el campo mostrar la edición del nombre
-                        onPressed: () {
-                          DialogHelper.editProfile(
-                            context,
-                            'Nombre',
-                            username,
-                                (newName) {
-                              //Almacenar el nuevo nombre
-                              setState(() {
-                                username = newName;
-                              });
-                            },
-                          );
-                        },
+              Column(
+                children: [
+                  ListTile(
+                  //Primer apartado, edicion de perfil
+                    title: const Text('Nombre de usuario'),
+                    //Mostrar nombre actual
+                    subtitle: Text(username),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      //Si oprime el campo mostrar la edición del nombre
+                      onPressed: () {
+                        DialogHelper.editProfile(
+                          context,
+                          'Nombre',
+                          username,
+                              (newName) {
+                            //Almacenar el nuevo nombre
+                            setState(() {
+                              username = newName;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    //Segundo apartado, edición de correo
+                    title: const Text('Correo electrónico'),
+                    //Mostrar correo actual
+                    subtitle: Text(userEmail),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      //Si oprime el campo mostrar la edición del correo
+                      onPressed: () {
+                        DialogHelper.editProfile(
+                          context,
+                          'Correo',
+                          userEmail,
+                              (newEmail) {
+                            //Almacenar el nuevo nombre
+                            setState(() {
+                              userEmail = newEmail;
+                            });
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                  const Divider(),
+              
+                  ListTile(
+                    //Tercer apartado, edición de contraseña
+                    title: const Text('Contraseña'),
+                    //Mostrar caracteres de contraseña
+                    subtitle: const Text('********'),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        //Mostrar ventana edicion contraseña
+                        DialogHelper.editPassword(context);
+                      },
+                    ),
+                  ),
+                  const Divider(),
+                  Container(
+                    //Acciones adicionales de la cuenta
+                    color: const Color.fromARGB(255, 232, 232, 232),
+                    width: double.infinity,
+                    height: 25,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Control de la cuenta',
+                        style: TextStyles.preguntas(responsive)
                       ),
                     ),
-                    Divider(),
-                    ListTile(
-                      //Segundo apartado, edición de correo
-                      title: Text('Correo electrónico'),
-                      //Mostrar correo actual
-                      subtitle: Text(userEmail),
-                      trailing: IconButton(
-                        icon: Icon(Icons.edit),
-                        //Si oprime el campo mostrar la edición del correo
-                        onPressed: () {
-                          DialogHelper.editProfile(
-                            context,
-                            'Correo',
-                            userEmail,
-                                (newEmail) {
-                              //Almacenar el nuevo nombre
-                              setState(() {
-                                userEmail = newEmail;
-                              });
-                            },
-                          );
-                        },
+                  ),
+                  Container(
+                    //Cuarto apartado, eliminar perfil
+                    alignment: Alignment.bottomLeft,
+                    child: CupertinoButton(
+                      child: Text(
+                        //Mostrar titulo del campo
+                        "Eliminar cuenta",
+                          style: TextStyles.salidas(responsive)
                       ),
+                      onPressed: () {
+                        //Si se oprime, mostrar ventana eliminar cuenta
+                        DialogHelper.deleteAccount(context, id);
+                      },
                     ),
-                    const Divider(),
-
-                    ListTile(
-                      //Tercer apartado, edición de contraseña
-                      title: const Text('Contraseña'),
-                      //Mostrar caracteres de contraseña
-                      subtitle: const Text('********'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          //Mostrar ventana edicion contraseña
-                          DialogHelper.editPassword(context);
-                        },
-                      ),
-                    ),
-                    Divider(),
-                    Container(
-                      //Acciones adicionales de la cuenta
-                      color: const Color.fromARGB(255, 232, 232, 232),
-                      width: double.infinity,
-                      height: 25,
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Control de la cuenta',
-                          style: TextStyles.preguntas(responsive)
-                        ),
-                      ),
-                    ),
-                    Container(
-                      //Cuarto apartado, eliminar perfil
-                      alignment: Alignment.bottomLeft,
-                      child: CupertinoButton(
-                        child: Text(
-                          //Mostrar titulo del campo
-                          "Eliminar cuenta",
-                            style: TextStyles.salidas(responsive)
-                        ),
-                        onPressed: () {
-                          //Si se oprime, mostrar ventana eliminar cuenta
-                          DialogHelper.deleteAccount(context, id);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),

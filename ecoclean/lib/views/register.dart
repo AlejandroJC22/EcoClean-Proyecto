@@ -1,17 +1,21 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_ecoclean/controller/facebook_signIn.dart';
+import 'package:flutter_ecoclean/controller/google_signIn.dart';
 import 'package:flutter_ecoclean/controller/terms_and_privacy.dart';
+import 'package:flutter_ecoclean/models/floatings_buttons.dart';
 import 'package:flutter_ecoclean/models/inputs.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/login.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_ecoclean/controller/dialogHelper.dart';
-
-import '../models/texto.dart';
+import 'package:flutter_ecoclean/views/menu.dart';
 
 // Llamamos a la pantalla Register
 class Register extends StatefulWidget {
-  Register({super.key});
+  const Register({super.key});
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -25,6 +29,8 @@ class _RegisterState extends State<Register> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
+  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
+  bool _obscureText = true;
 
 
   // Limpiamos los campos de texto
@@ -42,6 +48,7 @@ class _RegisterState extends State<Register> {
     final String email = emailController.text;
     final String password = passwordController.text;
     final String confirmPassword = confirmPasswordController.text;
+    
 
     // Validamos que en los campos hayan datos
     if (username.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
@@ -88,8 +95,6 @@ class _RegisterState extends State<Register> {
               'imagenURL': 'https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg',
               'provider': "Email"
             });
-
-            print('Usuario agregado a Firestore.');
           }
           DialogHelper.showAlertDialogRegister(context,"Registro Exitoso", "Se ha completado el registro, por favor inicie sesión.");
           _clearFields();
@@ -129,47 +134,59 @@ class _RegisterState extends State<Register> {
             children: [
               // Margen entre textos
               const SizedBox(height: 15),
-              Container(
-                // Establecemos un título con su respectivo margen
-                margin: const EdgeInsets.only(left: 15),
+              Center(
                 child: Text(
                   "Registrarse",
-                  style: TextStyles.tituloNegro(responsive)
+                  style: TextStyle(fontSize: responsive.inch * 0.03),
                 ),
               ),
               // Margen entre textos
-              const SizedBox(height: 50),
-              // Creamos un input para almacenar el nombre de usuario
-              Inputs(
-                controller: usernameController,
-                labelText: "Nombre de usuario",
-                obscureText: false,
-              ),
-              // Margen entre textos
-              const SizedBox(height: 15),
-              // Creamos un input para almacenar el correo electrónico
-              Inputs(
-                controller: emailController,
-                labelText: "Correo electrónico",
-                obscureText: false,
-              ),
-              // Margen entre textos
-              const SizedBox(height: 15),
-              // Creamos un input para almacenar la contraseña
-              Inputs(
-                controller: passwordController,
-                labelText: "Contraseña",
-                // Ocultamos los datos
-                obscureText: true,
-              ),
-              // Margen entre textos
-              const SizedBox(height: 15),
-              // Creamos un input para verificar que la contraseña sea la misma
-              Inputs(
-                controller: confirmPasswordController,
-                labelText: "Confirmar contraseña",
-                obscureText: true,
-              ),
+              const SizedBox(height: 30),
+              TextFieldContainer(child: TextField(
+                  controller: usernameController,
+                  decoration: InputDecoration(
+                    hintText: 'Nombre',
+                    icon: Icon(Icons.person, color:Colors.green[100]),
+                    border: InputBorder.none
+                  ),
+                )),
+
+                const SizedBox(height: 20,),
+
+                TextFieldContainer(child: TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(
+                    hintText: 'Correo electrónico',
+                    icon: Icon(Icons.mail, color:Colors.green[100]),
+                    border: InputBorder.none
+                  ),
+                )),
+
+                const SizedBox(height: 20,),
+
+                TextFieldContainer(child: TextField(
+                  obscureText: _obscureText,
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                    hintText: 'Contraseña',
+                    icon: Icon(Icons.lock, color:Colors.green[100]),
+                    suffixIcon: showPassword(),
+                    border: InputBorder.none
+                  ),
+                )),
+
+                const SizedBox(height: 20,),
+
+                TextFieldContainer(child: TextField(
+                  obscureText: _obscureText,
+                  controller: confirmPasswordController,
+                  decoration: InputDecoration(
+                    hintText: 'Confirma la contraseña',
+                    icon: Icon(Icons.lock, color:Colors.green[100]),
+                    suffixIcon: showPassword(),
+                    border: InputBorder.none
+                  ),
+                )),
               // Margen entre textos
               const SizedBox(height: 15),
               // Creamos un botón para validar los datos y enviarlos a la base de datos
@@ -186,11 +203,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
               ),
-              Container(
-                child: TextAndPrivacy.getRichText(context),
-              ),
-              // Margen entre textos
-              const SizedBox(height: 30),
+              const SizedBox(height: 15),
               // En caso de tener cuenta, volvemos a la pantalla de inicio de sesión
               Container(
                 alignment: Alignment.bottomCenter,
@@ -203,7 +216,7 @@ class _RegisterState extends State<Register> {
                     ),
                     GestureDetector(
                       child: const Text(
-                        "Iniciar Sesión",
+                        "Ingresar",
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
@@ -212,16 +225,85 @@ class _RegisterState extends State<Register> {
                       ),
                       // Volvemos a la pantalla de inicio de sesión
                       onTap: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Login()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Login()));
                       },
                     ),
                   ],
                 ),
-              )
+              ),
+              // Margen entre textos
+              const SizedBox(height: 15),
+              const Center(
+                child: Text('O continua con', style: TextStyle(fontSize: 16),),
+              ),
+              const SizedBox(height: 10),
+              //Fila de botones
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  //Boton Facebook
+                  buildFloatingButton(
+                    imagePath: 'lib/iconos/facebook.png',
+                    onTap: () async {
+                      //Validar los datos de inicio con Facebook
+                      final user = await _firebaseAuthService.signInWithFacebook();
+                      //Si se acepta el ingreso
+                      if (user != null) {
+                        //Navegar a la pantalla inicial
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Menu()),
+                        );
+                      }
+                    },
+                  ),
+
+                  //Espaciado entre campos
+                  const SizedBox(
+                    width: 10,
+                  ),
+
+                  //Boton Google
+                  buildFloatingButton(
+                    imagePath: 'lib/iconos/google.png',
+                    onTap: () async {
+                      //Validar el ingreso con google
+                      await signInWithGoogleAndSaveData(context);
+                    },
+                  )
+                  //Boton Twitter
+                  //FloatingActionButton(
+                  //  //Logica al oprimir el boton
+                  //  onPressed: () async {
+                  //    //Validar el ingreso con twitter
+                  //    await signInWithTwitter(context);
+                  //  },
+                  //  //Decoración del boton
+                  //  backgroundColor: Colors.black,
+                  //  child: Image.asset(
+                  //    'lib/iconos/twitter.png',
+                  //    color: Colors.white,
+                  //    height: 30,
+                  //  ),
+                  //)
+                ],
+              ),
+              SizedBox(height: responsive.inch * 0.03,),
+              Container(
+                child: TextAndPrivacy.getRichText(context),
+              ),              
+              SizedBox(height: responsive.inch * 0.05,),
             ],
           ),
         ),
       ),
     );
+  }
+  Widget showPassword(){
+    return IconButton(onPressed: (){
+      setState(() {
+        _obscureText = !_obscureText;
+      });
+    }, icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off), color: Colors.green[100]);
   }
 }

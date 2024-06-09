@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecoclean/views/configPage.dart';
 import 'package:flutter_ecoclean/views/edit.dart';
 import 'package:flutter_ecoclean/views/favoritos.dart';
 import 'package:flutter_ecoclean/views/home.dart';
@@ -9,6 +12,8 @@ import 'package:flutter_ecoclean/views/login.dart';
 import '../models/texto.dart';
 
 class Menu extends StatefulWidget {
+  const Menu({super.key});
+
   @override
   MenuState createState() => MenuState();
 }
@@ -55,13 +60,15 @@ class MenuState extends State<Menu> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return Home();
+        return const Home();
       case 1:
-        return Edit();
+        return const Edit();
       case 2:
-        return FavoritosScreen();
+        return const FavoritosScreen();
+      case 3:
+        return const ConfigPage();
       default:
-        return Home();
+        return const Home();
     }
   }
 
@@ -136,13 +143,22 @@ class MenuState extends State<Menu> {
                       _onSelectItem(2);
                     },
                   ),
-                  const SizedBox(height: 300),
                   ListTile(
-                    title: Text('Cerrar sesión', style: TextStyle(color: Colors.red, fontSize: 16)),
+                    leading: _selectedDrawerItem == 3 ? const Icon(Icons.arrow_forward_ios_sharp, color: Colors.green) : const Icon(Icons.arrow_back_ios),
+                    trailing: _selectedDrawerItem == 3 ? const Icon(Icons.settings, color: Colors.green) : const Icon(Icons.settings),
+                    selected: (3 == _selectedDrawerItem),
+                    title: Text('Configuración', style: TextStyle(color: _selectedDrawerItem == 3 ? Colors.green : Colors.black, fontSize: 16)),
+                    onTap: () {
+                      _onSelectItem(3);
+                    },
+                  ),
+                  SizedBox(height: responsive.inch * 0.3),
+                  ListTile(
+                    title: const Text('Cerrar sesión', style: TextStyle(color: Colors.red, fontSize: 16)),
                     leading: const Icon(Icons.logout, color: Colors.red),
                     onTap: () async {
                       await FirebaseAuth.instance.signOut();
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Login()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Login()));
                     },
                   ),
                 ],
