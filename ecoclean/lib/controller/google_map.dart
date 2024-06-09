@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,7 +12,7 @@ class GoogleMapWidget extends StatefulWidget {
   final LocationData? userLocation;
 
   //Traer la ubicación del usuario de la vista home
-  GoogleMapWidget({required this.userLocation});
+  const GoogleMapWidget({super.key, required this.userLocation});
 
   @override
   //Iniciar el mapa en la pantalla home
@@ -60,7 +62,7 @@ class MapGoogle extends StatelessWidget {
   late GoogleMapController mapController;
 
   //Traer las animaciones de camara y la ubicación del usuario
-  MapGoogle({required this.userLocation, required this.onMapCreated});
+  MapGoogle({super.key, required this.userLocation, required this.onMapCreated});
 
   @override
   //Construcción del mapa

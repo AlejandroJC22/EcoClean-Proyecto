@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, sort_child_properties_last
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -96,7 +98,7 @@ class _ForgotPassState extends State<ForgotPass>{
                 child: Text("Cancelar", style: TextStyles.enlaces(responsive)),
               ),
               //Espaciado entre campos
-              SizedBox(width: 80),
+              const SizedBox(width: 80),
               //Icono de la aplicación
               Image.asset("lib/iconos/logoApp.png", width: 32, height: 32),
             ],
@@ -110,7 +112,7 @@ class _ForgotPassState extends State<ForgotPass>{
               //Titulo inicial
               Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.symmetric(horizontal: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text("Encuentra tu cuenta",
                 style: TextStyles.tituloNegro(responsive)),
               ),
@@ -118,18 +120,22 @@ class _ForgotPassState extends State<ForgotPass>{
               const SizedBox(height: 20),
               //Texto informativo
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Text("Introduce el correo electrónico asociado a tu cuenta para cambiar tu contraseña",
                 style: TextStyles.textoSinNegrita(responsive)),
               ),
               //Espaciado entre campos
               const SizedBox(height: 15),
               //Espacio de ingreso de texto
-              Inputs(
-                //Almacenamiento y diseño de datos
+              TextFieldContainer(
+                child: TextField(
                   controller: emailController,
-                  labelText: "Correo electronico",
-                  obscureText: false
+                  decoration: InputDecoration(
+                    hintText: 'Correo electrónico',
+                    icon: Icon(Icons.person, color:Colors.green[100]),
+                    border: InputBorder.none
+                  ),
+                )
               ),
               //Container boton
               Container(

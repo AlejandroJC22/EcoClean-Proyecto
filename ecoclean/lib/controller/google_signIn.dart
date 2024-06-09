@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,7 @@ Future<void> showMenuScreen(BuildContext context) async {
   await Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) {
-        return Menu();
+        return const Menu();
       },
     ),
   );
@@ -62,7 +64,7 @@ Future<UserCredential?> signInWithGoogleAndSaveToFirestore(BuildContext context)
 
         //Si es primer ingreso, almacenamos los datos y mostramos la pantalla inicial
         print('Usuario agregado a Firestore.');
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));
 
       } else {
         //Si ya estaba registrado mostramos la pantalla inicial sin almacenar datos
@@ -94,7 +96,7 @@ Future<void> signInWithGoogleAndSaveData(BuildContext context) async {
 
       if (existingUser.docs.isNotEmpty) {
         // Usuario ya existe en Firestore, redirigir a la pantalla de menú
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Menu()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const Menu()));
         return;
       }
     }

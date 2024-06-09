@@ -14,7 +14,7 @@ class MapFavoritesPage extends StatefulWidget {
 
 class _MapFavoritesPageState extends State<MapFavoritesPage> {
   late GoogleMapController mapController;
-  LatLng selectedLocation = LatLng(4.60971, -74.08175);
+  LatLng selectedLocation = const LatLng(4.60971, -74.08175);
   String address = '';
 
   @override

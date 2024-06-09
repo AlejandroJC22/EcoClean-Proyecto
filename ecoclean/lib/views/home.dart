@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/google_map.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
-import 'package:flutter_ecoclean/views/chatBotAi.dart';
+import 'package:flutter_ecoclean/views/chatBot.dart';
 import 'package:location/location.dart';
 import 'package:url_launcher/url_launcher.dart';
 

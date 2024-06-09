@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecoclean/controller/current_location.dart';
@@ -103,7 +105,6 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                           // Establecer el texto del controlador antes de mostrar el diálogo
                           addressController.text = address;
 
-                          // ignore: use_build_context_synchronously
                           DialogHelper.location(
                             context,
                             address,
@@ -165,7 +166,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                       //Logica si se oprime el texto
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MapFavoritesPage()));
+                            builder: (context) => const MapFavoritesPage()));
                       },
                     ),
                   ),
@@ -185,7 +186,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                     ),
                   ),
                   //Lista de opciones
-                  Divider(),
+                  const Divider(),
                   //Primera opción
                   ListTile(
                     leading: Container(
@@ -210,7 +211,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                       child: const Icon(Icons.edit, color: Colors.grey),
                     ),
                     title: const Text('Casa', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                    subtitle: Text(home, style: TextStyle(color: Colors.black)),
+                    subtitle: Text(home, style: const TextStyle(color: Colors.black)),
                     onTap: () {
                       if (home == "" || home.isEmpty) {
                         // Si la dirección está vacía, mostrar un diálogo de alerta
@@ -231,7 +232,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                     },
                   ),
                   //Divisor de campos
-                  Divider(),
+                  const Divider(),
                   //Segunda opción
                   ListTile(
                     leading: Container(
@@ -242,23 +243,18 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                     ),
                     trailing: GestureDetector(
                       onTap: () {
-                        DialogHelper.editProfile(
-                          context,
-                          'Trabajo',
-                          work,
-                              (newWork) {
-                            // Almacenar el nuevo nombre
-                            setState(() {
-                              work = newWork;
-                            });
-                          },
+                        DialogHelper.editProfile(context, 'Trabajo', work, 
+                        (newWork) {
+                          setState(() {
+                            work = newWork;
+                          });
+                        },
                         );
                       },
                       child: const Icon(Icons.edit, color: Colors.grey),
                     ),
                     title: const Text('Trabajo', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                    // Mostrar dirección obtenida en current_location dentro de las comillas
-                    subtitle: Text(work, style: TextStyle(color: Colors.black)),
+                    subtitle: Text(work, style: const TextStyle(color: Colors.black)),
                     onTap: () {
                       if (work == "" || work.isEmpty) {
                         // Si la dirección está vacía, mostrar un diálogo de alerta
@@ -279,7 +275,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                     },
                   ),
                   //Divisor de campos
-                  Divider(),
+                  const Divider(),
                   //Espaciado entre campos
                   const SizedBox(
                     height: 10,
@@ -302,7 +298,7 @@ class _FavoritosScreenState extends State<FavoritosScreen> {
                     ),
                   ),
                   //Espaciado entre campos
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   //Contenedor boton eliminar
                   Container(
                     alignment: Alignment.bottomLeft,

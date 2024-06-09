@@ -25,16 +25,16 @@ class Responsive {
   }
   //calculamos el ancho de la pantalla
   double wp(double percent) {
-    return this.width * percent / 100;
+    return width * percent / 100;
   }
 
   //calculamos el el alto de la pantalla
   double hp(double percent) {
-    return this.width * percent / 100;
+    return width * percent / 100;
   }
 
   //calculamos la longitud diagonal de la pantalla
   double ip(double percent) {
-    return this.width * percent / 100;
+    return width * percent / 100;
   }
 }

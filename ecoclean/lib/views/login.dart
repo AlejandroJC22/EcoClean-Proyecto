@@ -1,19 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecoclean/controller/google_signIn.dart';
-import 'package:flutter_ecoclean/controller/terms_and_privacy.dart';
-import 'package:flutter_ecoclean/controller/twitter_signIn.dart';
+// import 'package:flutter_ecoclean/controller/twitter_signIn.dart';
 import 'package:flutter_ecoclean/models/texto.dart';
 import 'package:flutter_ecoclean/utilidades/responsive.dart';
 import 'package:flutter_ecoclean/views/forgot_password.dart';
-import 'package:flutter_ecoclean/views/menu.dart';
 import 'package:flutter_ecoclean/views/register.dart';
 import '../controller/email_signIn.dart';
-import '../controller/facebook_signIn.dart';
 import '../models/inputs.dart';
 
 class Login extends StatefulWidget {
-  Login({super.key});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _loginpageState();
@@ -25,7 +21,7 @@ class _loginpageState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   //Autenticación con la base de datos
-  final FirebaseAuthService _firebaseAuthService = FirebaseAuthService();
+  bool _obscureText = true;
 
   //Construir la vista
   @override
@@ -47,18 +43,18 @@ class _loginpageState extends State<Login> {
                 //Icono de la aplicación
                 Image.asset(
                   'lib/iconos/logo.png',
-                  height: 200,
+                  height: 180,
                 ),
+                SizedBox(height: responsive.inch * 0.03,),
                 //Columna inicial
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //Contenedor titulo inicial
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                    Center(
                       child: Text(
                         "Iniciar Sesión",
-                        style: TextStyles.tituloNegro(responsive),
+                        style: TextStyle(fontSize: responsive.inch * 0.03),
                       ),
                     ),
                     //Espaciado entre campos
@@ -66,21 +62,27 @@ class _loginpageState extends State<Login> {
                       height: 30,
                     ),
                     //Input correo electronico
-                    Inputs(
-                        controller: emailController,
-                        labelText: "Correo electronico",
-                        obscureText: false
-                    ),
-                    //Espaciado entre campos
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    //input contraseña
-                    Inputs(
-                        controller: passwordController,
-                        labelText: "Contraseña",
-                        obscureText: true
-                    ),
+                    TextFieldContainer(child: TextField(
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        hintText: 'Correo electrónico',
+                        icon: Icon(Icons.person, color:Colors.green[100]),
+                        border: InputBorder.none
+                      ),
+                    )),
+      
+                    const SizedBox(height: 20,),
+        
+                    TextFieldContainer(child: TextField(
+                      obscureText: _obscureText,
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        hintText: 'Contraseña',
+                        icon: Icon(Icons.lock, color:Colors.green[100]),
+                        suffixIcon: showPassword(),
+                        border: InputBorder.none
+                      ),
+                    )),
                     //Contenedor boton inicio sesión
                     Container(
                       //Alineación y tamaño
@@ -117,7 +119,9 @@ class _loginpageState extends State<Login> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ForgotPass()));
+                                builder: (context) => const ForgotPass()
+                              )
+                          );
                         },
                       ),
                     ),
@@ -134,7 +138,7 @@ class _loginpageState extends State<Login> {
                         onPressed: () {
                           //Navegar a la pantalla de registro
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Register(),
+                            builder: (context) => const Register(),
                           ));
                         },
                       ),
@@ -143,78 +147,6 @@ class _loginpageState extends State<Login> {
                     const SizedBox(
                       height: 15,
                     ),
-                    //Contenedor texto informativo
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      //Texto informativo
-                      child: const Text("O continua con tu red social favorita"),
-                    ),
-                    //Espaciado entre campos
-                    const SizedBox(height: 15),
-                    //Fila de botones
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        //Boton Facebook
-                        FloatingActionButton(
-                          //Logica al oprimir el boton
-                          onPressed: () async {
-                            //Validar los datos de inicio con Facebook
-                            final user = await _firebaseAuthService.signInWithFacebook();
-                            //Si se acepta el ingreso
-                            if (user != null) {
-                              //Navegar a la pantalla inicial
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Menu()),
-                              );
-                            }
-                          },
-                          //Decoración del boton
-                          backgroundColor: const Color.fromARGB(255, 66, 103, 178),
-                          child: Image.asset('lib/iconos/facebook.png', color: Colors.white, height: 30),
-                        ),
-                        //Espaciado entre campos
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        //Boton Google
-                        FloatingActionButton(
-                          //Logica al oprimir el boton
-                          onPressed: () async {
-                            //Validar el ingreso con google
-                            await signInWithGoogleAndSaveData(context);
-                          },
-                          //Decoración del boton
-                          backgroundColor: Colors.white,
-                          child: Image.asset('lib/iconos/google.png', height: 30),
-                        ),
-                        //Espaciado entre campos
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        //Boton Twitter
-                        FloatingActionButton(
-                          //Logica al oprimir el boton
-                          onPressed: () async {
-                            //Validar el ingreso con twitter
-                            await signInWithTwitter(context);
-                          },
-                          //Decoración del boton
-                          backgroundColor: Colors.black,
-                          child: Image.asset(
-                            'lib/iconos/twitter.png',
-                            color: Colors.white,
-                            height: 30,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 9,),
-                    Container(
-                      child: TextAndPrivacy.getRichText(context),
-                    ),
-                    SizedBox(height: 5,)
                   ],
                 )
               ],
@@ -224,4 +156,12 @@ class _loginpageState extends State<Login> {
       ),
     );
   }
+  Widget showPassword(){
+    return IconButton(onPressed: (){
+      setState(() {
+        _obscureText = !_obscureText;
+      });
+    }, icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off), color: Colors.green[100]);
+  }
 }
+
